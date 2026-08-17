@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="LibraryManagement.Domain/LibraryManagement.Domain.csproj" Id="814721f4-8d0e-4dbd-96c0-c1b2b13c7e39" />
+  <Project Path="LibraryManagement.Presentation/LibraryManagement.Presentation.csproj" Id="a4bc818a-10cd-4bb6-affd-ef48f9b6bbb8" />
+</Solution>
