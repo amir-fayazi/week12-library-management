@@ -4,14 +4,14 @@ using LibraryManagement.Domain.Exceptions;
 
 namespace LibraryManagement.Domain.Entities
 {
-    public class BorrowedBook : BaseEntity
+    public class BookLoan : BaseEntity
     {
         public Book Book { get; private set; } 
         public User User { get; private set; }
         public DateOnly BorrowDate { get; private set; }
 
 
-        public BorrowedBook(User user, Book book, DateOnly borrowDate)
+        public BookLoan(User user, Book book, DateOnly borrowDate)
         {
             ValidateUser(user);
             ValidateBook(book);
