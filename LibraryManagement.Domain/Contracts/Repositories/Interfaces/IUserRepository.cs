@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LibraryManagement.Domain.Repositories.Interfaces
+namespace LibraryManagement.Domain.Contracts.Repositories.Interfaces
 {
     public interface IUserRepository
     {
@@ -13,7 +13,6 @@ namespace LibraryManagement.Domain.Repositories.Interfaces
         User? GetByUsername(string username);
         bool ExistsByUsername(string username);
         List<User> GetAll();
-        //List<Book> GetLoanBooksByUsername(string username); 
 
         void Update(User updatedUser);
 
