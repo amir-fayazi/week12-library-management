@@ -1,46 +1,62 @@
 ﻿using LibraryManagement.Domain.Contracts.Repositories.Interfaces;
 using LibraryManagement.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using LibraryManagement.Domain.Exceptions;
+using LibraryManagement.Infrastructure.Data;
 
-namespace LibraryManagement.Domain.Repositories.EfCore
+
+namespace LibraryManagement.Infrastructure.Repositories.EfCore
 {
     public class EfUserRepository : IUserRepository
     {
+
+        private readonly AppDbContext _context;
+        public EfUserRepository(AppDbContext context)
+        {
+            _context = context;
+        }
+
         public User Add(User newUser)
         {
-            throw new NotImplementedException();
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
+
+            return newUser;
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var user = GetById(id);
+            if (user is null)
+                throw new NotFoundException("User not found for deletion.");
+            _context.Users.Remove(user);
+            _context.SaveChanges();
         }
 
         public bool ExistsByUsername(string username)
         {
-            throw new NotImplementedException();
+            return _context.Users.Any(p => p.Username == username);
         }
 
         public List<User> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Users.ToList();
         }
 
         public User? GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Users.Find(id);
         }
 
         public User? GetByUsername(string username)
         {
-            throw new NotImplementedException();
+            return _context.Users.FirstOrDefault(p => p.Username == username);
         }
 
         public void Update(User updatedUser)
         {
-            throw new NotImplementedException();
+            _context.Users.Update(updatedUser);
+            _context.SaveChanges();
+
         }
     }
 }
