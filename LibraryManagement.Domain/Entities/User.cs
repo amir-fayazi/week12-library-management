@@ -36,11 +36,10 @@ namespace LibraryManagement.Domain.Entities
 
 
         //---------------------------passsword
-        public void ChangePassword(string newPassword, string currentPassword)
+        public void ChangePassword(string newPassword)
         {
-            if (currentPassword != Password)
-                throw new ValidationException("The current password is incorrect.");
-            if (newPassword == currentPassword)
+            
+            if (newPassword == Password)
                 throw new ValidationException("New password must be different from the current password.");
 
             ValidatePassword(newPassword);

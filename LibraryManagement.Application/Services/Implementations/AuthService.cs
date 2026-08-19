@@ -3,7 +3,6 @@ using LibraryManagement.Domain.Contracts.Services;
 using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Enums;
 using LibraryManagement.Domain.Exceptions;
-using LibraryManagement.Infrastructure.Repositories.EfCore;
 
 
 namespace LibraryManagement.Infrastructure.Services.Implementations
