@@ -1,7 +1,5 @@
 ﻿using LibraryManagement.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace LibraryManagement.Domain.Contracts.Services
 {
@@ -15,5 +13,6 @@ namespace LibraryManagement.Domain.Contracts.Services
         void ChangeTitle(int bookId, string title);
         void ChangeCategory(int bookId, int categoryId);
         void Delete(int bookId);
+        
     }
 }

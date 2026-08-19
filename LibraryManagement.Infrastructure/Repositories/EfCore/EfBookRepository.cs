@@ -54,6 +54,10 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
         {
             return _context.Books.Find(id);
         }
+        public List<Book> GetByCategoryId(int categoryId)
+        {
+            return _context.Books.Where(p => p.CategoryId == categoryId).ToList();
+        }
 
         public void Update(Book updatedBook)
         {

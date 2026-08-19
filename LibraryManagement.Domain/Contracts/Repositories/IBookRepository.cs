@@ -13,8 +13,9 @@ namespace LibraryManagement.Domain.Contracts.Repositories
         List<Book> GetAll();
         List<Book> GetAllAvailable();
         List<Book> GetAllBorrowed();
-
+        List<Book> GetByCategoryId(int CategoryId);
         void Update(Book updatedBook);
         void Delete(int id);
+
     }
 }
