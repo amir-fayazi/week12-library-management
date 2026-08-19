@@ -64,7 +64,7 @@ namespace LibraryManagement.Application.Services.Implementations
         }
         public List<Book> GetBooksByCategory(int categoryId)
         {
-            return GetAll().Where(p => p.CategoryId == categoryId).ToList();
+            return _bookRepo.GetByCategoryId(categoryId);
         }
     }
 }
