@@ -9,6 +9,7 @@ namespace LibraryManagement.Domain.Entities
     {
         public string Title { get; private set; } = string.Empty;
         public Category Category { get; private set; }
+        public int CategoryId { get; private set; }
 
 
         public Book(string title, Category category)
