@@ -1,5 +1,5 @@
 ﻿
-using LibraryManagement.Domain.Contracts.Repositories.Interfaces;
+using LibraryManagement.Domain.Contracts.Repositories;
 using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Exceptions;
 using LibraryManagement.Infrastructure.Data;

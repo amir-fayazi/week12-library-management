@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LibraryManagement.Domain.Contracts.Services.Interfaces
+namespace LibraryManagement.Domain.Contracts.Services
 {
     public interface IAuthService
     {

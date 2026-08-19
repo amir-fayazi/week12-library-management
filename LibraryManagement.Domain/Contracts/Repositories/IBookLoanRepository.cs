@@ -1,8 +1,6 @@
-﻿
+﻿using LibraryManagement.Domain.Entities;
 
-using LibraryManagement.Domain.Entities;
-
-namespace LibraryManagement.Domain.Contracts.Repositories.Interfaces
+namespace LibraryManagement.Domain.Contracts.Repositories
 {
     public interface IBookLoanRepository
     {
