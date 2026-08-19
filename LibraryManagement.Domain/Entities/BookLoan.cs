@@ -9,7 +9,7 @@ namespace LibraryManagement.Domain.Entities
         public Book Book { get; private set; } 
         public User User { get; private set; }
         public DateOnly BorrowDate { get; private set; }
-
+        public bool IsReturned { get; private set; } = false;
 
         public BookLoan(User user, Book book, DateOnly borrowDate)
         {
@@ -40,6 +40,11 @@ namespace LibraryManagement.Domain.Entities
 
             if (borrowDate > today)
                 throw new ValidationException("Borrow date cannot be in the future.");
+        }
+
+        public void MarkAsReturned()
+        {
+            IsReturned = true;
         }
 
     }
