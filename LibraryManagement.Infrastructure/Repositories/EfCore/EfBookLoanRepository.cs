@@ -35,7 +35,7 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
         public List<Book> GetBorrowedBooksByUserId(int userId)
         {
             return _context.BookLoans
-                .Where(p => p.User.Id == userId)
+                .Where(p => p.User.Id == userId && !p.IsReturned)
                 .Select(p=> p.Book)
                 .ToList();
                        
