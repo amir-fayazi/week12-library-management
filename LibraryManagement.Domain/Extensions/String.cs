@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
 
-namespace Golestan.Core.Extensions
+namespace LibraryManagement.Domain.Extensions
 {
     public static class String
     {

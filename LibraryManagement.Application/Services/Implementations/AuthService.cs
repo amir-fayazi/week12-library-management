@@ -5,7 +5,7 @@ using LibraryManagement.Domain.Enums;
 using LibraryManagement.Domain.Exceptions;
 
 
-namespace LibraryManagement.Infrastructure.Services.Implementations
+namespace LibraryManagement.Application.Services.Implementations
 {
     public class AuthService : IAuthService
     {
