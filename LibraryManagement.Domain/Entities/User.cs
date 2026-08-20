@@ -30,6 +30,8 @@ namespace LibraryManagement.Domain.Entities
         //---------------------------username
         public void ChangeUsername(string username)
         {
+            if (username == Username)
+                throw new ValidationException("New username must be different from the current username.");
             ValidateUsername(username);
             Username = username;
 
