@@ -11,6 +11,10 @@ namespace LibraryManagement.Domain.Entities
         public DateOnly BorrowDate { get; private set; }
         public bool IsReturned { get; private set; } = false;
 
+        public BookLoan()
+        {
+            
+        }
         public BookLoan(User user, Book book, DateOnly borrowDate)
         {
             ValidateUser(user);

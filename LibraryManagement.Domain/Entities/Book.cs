@@ -11,7 +11,10 @@ namespace LibraryManagement.Domain.Entities
         public Category Category { get; private set; }
         public int CategoryId { get; private set; }
 
-
+        public Book()
+        {
+            
+        }
         public Book(string title, Category category)
         {
             ValidateTitle(title);
