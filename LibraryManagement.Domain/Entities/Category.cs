@@ -22,6 +22,8 @@ namespace LibraryManagement.Domain.Entities
 
         public void ChangeName(string name)
         {
+            if (name == Name)
+                throw new ValidationException("New name must be different from the current name.");
             ValidateName(name);
             Name = name;
         }
