@@ -14,5 +14,8 @@ namespace LibraryManagement.Domain.Contracts.Repositories
 
         void Update(BookLoan updatedBookLoan);
         void Delete(int id);
+
+        public List<BookLoan> GetActiveLoans();
+        List<BookLoan> GetUserLoans(int userId);
     }
 }

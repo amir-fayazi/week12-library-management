@@ -64,5 +64,17 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
             _context.BookLoans.Update(updatedBookLoan);
             _context.SaveChanges();
         }
+
+        public List<BookLoan> GetActiveLoans()
+        {
+            return _context.BookLoans.Where(x => !x.IsReturned).ToList();
+        }
+        public List<BookLoan> GetUserLoans(int userId)
+        {
+            return _context.BookLoans
+                .Where(x => x.User.Id == userId)
+                .ToList();
+        }
     }
 }
+
