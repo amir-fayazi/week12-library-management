@@ -1,4 +1,5 @@
 ﻿using LibraryManagement.Domain.Contracts.Repositories;
+using LibraryManagement.Domain.DTOs;
 using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Exceptions;
 using LibraryManagement.Infrastructure.Data;
@@ -58,6 +59,15 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
         {
             _context.Categories.Update(updatedCategory);
             _context.SaveChanges();
+        }
+
+        public List<CategoryWithBookCountDto> GetCategoriesWithBookCount()
+        {
+            return _context.Categories.Select(c => new CategoryWithBookCountDto()
+            {
+                Name = c.Name,
+                BookCount = c.Books.Count(),
+            }).ToList();
         }
     }
 }

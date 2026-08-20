@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Domain.Entities;
+﻿using LibraryManagement.Domain.DTOs;
+using LibraryManagement.Domain.Entities;
 
 namespace LibraryManagement.Domain.Contracts.Repositories
 {
@@ -14,7 +15,7 @@ namespace LibraryManagement.Domain.Contracts.Repositories
 
         void Update(Category updatedCategory);
         void Delete(int id);
-
+        List<CategoryWithBookCountDto> GetCategoriesWithBookCount();
 
     }
 }
