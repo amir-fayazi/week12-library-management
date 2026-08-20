@@ -33,7 +33,10 @@ namespace LibraryManagement.Application.Services.Implementations
 
         public void Delete(int id)
         {
-             GetById(id);
+             var user = GetById(id);
+            if (user.BookLoans.Any())
+                throw new BusinessRuleException("Cannot delete user because loan history exists.");
+
             _userRepo.Delete(id);
         }
 

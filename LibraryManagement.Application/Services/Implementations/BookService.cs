@@ -47,7 +47,11 @@ namespace LibraryManagement.Application.Services.Implementations
 
         public void Delete(int bookId)
         {
-             GetById(bookId);
+            
+            var book =  GetById(bookId);
+            if(book.BookLoans.Any(l => !l.IsReturned))
+                throw new BusinessRuleException("Cannot delete borrowed book");
+
             _bookRepo.Delete(bookId);
         }
 
