@@ -19,7 +19,7 @@ namespace LibraryManagement.Application.Services.Implementations
         }
         public void ChangeCategory(int bookId, int categoryId)
         {
-            var book = GetById(bookId);
+            var book = GetBookById(bookId);
             var category = _categoryRepo.GetById(categoryId);
             if (category is null)
                 throw new NotFoundException("Category not found");
@@ -30,37 +30,42 @@ namespace LibraryManagement.Application.Services.Implementations
 
         public void ChangeTitle(int bookId, string title)
         {
-            var book = GetById(bookId);
+            var book = GetBookById(bookId);
             book.ChangeTitle(title);
 
             _bookRepo.Update(book);
         }
 
-        public Book Create(string title, Category category)
+        public Book CreateBook(string title, int categoryId)
         {
+            var category = _categoryRepo.GetById(categoryId);
+            if (category is null)
+                throw new NotFoundException("Category not found");
+
             var book = new Book(title, category);
+
             if(_bookRepo.ExistsByTitle(title))
                 throw new DuplicateException("title is already exists");
             _bookRepo.Add(book);
             return book;
         }
 
-        public void Delete(int bookId)
+        public void DeleteBook(int bookId)
         {
             
-            var book =  GetById(bookId);
+            var book = GetBookById(bookId);
             if(book.BookLoans.Any(l => !l.IsReturned))
                 throw new BusinessRuleException("Cannot delete borrowed book");
 
             _bookRepo.Delete(bookId);
         }
 
-        public List<Book> GetAll()
+        public List<Book> GetAllBook()
         {
             return _bookRepo.GetAll();
         }
 
-        public Book GetById(int bookId)
+        public Book GetBookById(int bookId)
         {
             var book = _bookRepo.GetById(bookId);
             return book is null ? throw new NotFoundException("Book not found") : book;
@@ -70,5 +75,9 @@ namespace LibraryManagement.Application.Services.Implementations
         {
             return _bookRepo.GetByCategoryId(categoryId);
         }
+
+
+
+       
     }
 }

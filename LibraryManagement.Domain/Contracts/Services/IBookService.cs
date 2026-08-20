@@ -5,14 +5,14 @@ namespace LibraryManagement.Domain.Contracts.Services
 {
     public interface IBookService
     {
-        Book Create(string title, Category category);
+        Book CreateBook(string title, int categoryId);
 
-        Book GetById(int bookId);
-        List<Book> GetAll();
+        Book GetBookById(int bookId);
+        List<Book> GetAllBook();
         List<Book> GetBooksByCategory(int categoryId);
         void ChangeTitle(int bookId, string title);
         void ChangeCategory(int bookId, int categoryId);
-        void Delete(int bookId);
+        void DeleteBook(int bookId);
         
     }
 }
