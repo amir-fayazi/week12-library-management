@@ -42,12 +42,12 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
 
         public List<Book> GetAllAvailable()
         {
-            throw new NotImplementedException();
+            return _context.Books.Where(book => book.BookLoans.All(loan => loan.IsReturned)).ToList();
         }
 
         public List<Book> GetAllBorrowed()
         {
-            throw new NotImplementedException();
+            return _context.BookLoans.Where(p => !p.IsReturned).Select(p => p.Book).ToList();
         }
 
         public Book? GetById(int id)
