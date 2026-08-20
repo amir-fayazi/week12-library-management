@@ -44,10 +44,10 @@ namespace LibraryManagement.Application.Services.Implementations
 
             var book = _bookRepo.GetById(bookId);
             if (book is null)
-                throw new NotFoundException("Book loan not found");
+                throw new NotFoundException("Book not found");
 
             if (!_loanRepo.IsAvailable(bookId))
-                throw new BusinessRuleException("Book is already borrowed");
+                throw new BusinessRuleException("Book is not available for loan");
 
             var borrowDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
@@ -60,7 +60,7 @@ namespace LibraryManagement.Application.Services.Implementations
 
         public void ReturnBook(int bookLoanId)
         {
-            var bookLoan = _loanRepo.GetById(bookLoanId) ?? throw new NotFoundException("Book not found");
+            var bookLoan = _loanRepo.GetById(bookLoanId) ?? throw new NotFoundException("Book loan not found");
 
             bookLoan.MarkAsReturned();
             _loanRepo.Update(bookLoan);
