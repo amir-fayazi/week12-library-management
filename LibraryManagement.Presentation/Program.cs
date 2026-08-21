@@ -1,4 +1,42 @@
-﻿
+﻿using LibraryManagement.Application.Contracts.Services;
+using LibraryManagement.Application.Services.Implementations;
+using LibraryManagement.Domain.Contracts.Repositories;
+using LibraryManagement.Domain.Contracts.Services;
+using LibraryManagement.Infrastructure.Data;
+using LibraryManagement.Infrastructure.Repositories.EfCore;
+using LibraryManagement.Presentation.Menus;
+
+var context = new AppDbContext();
+
+IBookRepository bookRepository = new EfBookRepository(context);
+ICategoryRepository categoryRepository = new EfCategoryRepository(context);
+IUserRepository userRepository = new EfUserRepository(context);
+IBookLoanRepository bookLoanRepository = new EfBookLoanRepository(context);
+
+
+IBookService bookService = new BookService(
+    bookRepository,
+    categoryRepository);
+
+ICategoryService categoryService = new CategoryService(
+    categoryRepository);
+
+IBookLoansService bookLoansService = new BookLoansService(
+    bookLoanRepository,
+    userRepository,
+    bookRepository);
+
+IAuthService authService = new AuthService(
+    userRepository);
+
+
+var loginMenu = new LoginMenu(
+    authService,
+    categoryService,
+    bookService,
+    bookLoansService);
+
+
 while (true)
 {
     Console.Clear();
@@ -7,28 +45,32 @@ while (true)
     Console.WriteLine("1. Login");
     Console.WriteLine("2. Register");
     Console.WriteLine("3. Exit");
+
     Console.Write("Select an option: ");
 
     var input = Console.ReadLine();
 
+
     switch (input)
     {
         case "1":
-            Console.WriteLine("Login selected");
+            loginMenu.Show();
             break;
+
 
         case "2":
             Console.WriteLine("Register selected");
+            Console.ReadKey();
             break;
+
 
         case "3":
             return;
 
+
         default:
             Console.WriteLine("Invalid option");
+            Console.ReadKey();
             break;
     }
-
-    Console.WriteLine("Press any key...");
-    Console.ReadKey();
 }
