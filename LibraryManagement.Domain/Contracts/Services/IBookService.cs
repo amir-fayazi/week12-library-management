@@ -9,6 +9,7 @@ namespace LibraryManagement.Domain.Contracts.Services
 
         Book GetBookById(int bookId);
         List<Book> GetAllBooks();
+        List<Book> GetAllAvailableBooks();
         List<Book> GetBooksByCategory(int categoryId);
         void ChangeTitle(int bookId, string title);
         void ChangeCategory(int bookId, int categoryId);

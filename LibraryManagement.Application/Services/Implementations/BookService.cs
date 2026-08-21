@@ -64,7 +64,7 @@ namespace LibraryManagement.Application.Services.Implementations
         {
             return _bookRepo.GetAll();
         }
-
+        
         public Book GetBookById(int bookId)
         {
             var book = _bookRepo.GetById(bookId);
@@ -76,8 +76,12 @@ namespace LibraryManagement.Application.Services.Implementations
             return _bookRepo.GetByCategoryId(categoryId);
         }
 
+        public List<Book> GetAllAvailableBooks()
+        {
+            return _bookRepo.GetAllAvailable();
+        }
 
 
-       
+
     }
 }

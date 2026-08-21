@@ -3,19 +3,24 @@ using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Enums;
 using LibraryManagement.Domain.Exceptions;
 using LibraryManagement.Domain.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace LibraryManagement.Presentation.Menus
 {
     public class LoginMenu
     {
         private readonly IAuthService _authService;
-
-        public LoginMenu(IAuthService authService)
+        private readonly ICategoryService _categoryService;
+        private readonly IBookService _bookService;
+        private readonly IBookLoansService _bookLoansService;
+        public LoginMenu(
+            IAuthService authService, ICategoryService categoryService, IBookService bookService, IBookLoansService bookLoansService
+            )
         {
             _authService = authService;
+            _categoryService = categoryService;
+            _bookService = bookService;
+            _bookLoansService = bookLoansService;
         }
         public void Show()
         {
@@ -54,12 +59,12 @@ namespace LibraryManagement.Presentation.Menus
 
                     if (user.Role == RoleEnum.Admin)
                     {
-                        var adminMenu = new AdminMenu();
+                        var adminMenu = new AdminMenu(_categoryService, _bookService);
                         adminMenu.Show();
                     }
                     else
                     {
-                        var userMenu = new UserMenu();
+                        var userMenu = new UserMenu(user.Id, _categoryService, _bookService, _bookLoansService);
                         userMenu.Show();
                     }
 
