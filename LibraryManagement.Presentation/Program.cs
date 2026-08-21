@@ -36,6 +36,7 @@ var loginMenu = new LoginMenu(
     bookService,
     bookLoansService);
 
+var registerMenu = new RegisterMenu(authService);
 
 while (true)
 {
@@ -59,7 +60,7 @@ while (true)
 
 
         case "2":
-            Console.WriteLine("Register selected");
+            registerMenu.Show();
             Console.ReadKey();
             break;
 
