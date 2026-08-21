@@ -60,7 +60,7 @@ namespace LibraryManagement.Application.Services.Implementations
             _bookRepo.Delete(bookId);
         }
 
-        public List<Book> GetAllBook()
+        public List<Book> GetAllBooks()
         {
             return _bookRepo.GetAll();
         }

@@ -8,7 +8,7 @@ namespace LibraryManagement.Domain.Contracts.Services
         Book CreateBook(string title, int categoryId);
 
         Book GetBookById(int bookId);
-        List<Book> GetAllBook();
+        List<Book> GetAllBooks();
         List<Book> GetBooksByCategory(int categoryId);
         void ChangeTitle(int bookId, string title);
         void ChangeCategory(int bookId, int categoryId);
