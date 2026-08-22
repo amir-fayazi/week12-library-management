@@ -1,6 +1,4 @@
-﻿
-
-using LibraryManagement.Domain.Entities;
+﻿using LibraryManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Infrastructure.Data
@@ -15,11 +13,13 @@ namespace LibraryManagement.Infrastructure.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                 @"Server=.;Database=Week12-LibraryManagementDb;Integrated Security=True;TrustServerCertificate=True;");
+                @"Server=.;Database=Week12-LibraryManagementDb;Integrated Security=True;TrustServerCertificate=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //-------------------------Configure column names
+
             modelBuilder.Entity<User>()
                 .Property(x => x.Id)
                 .HasColumnName("UserId");
@@ -36,6 +36,9 @@ namespace LibraryManagement.Infrastructure.Data
                 .Property(x => x.Id)
                 .HasColumnName("BookLoanId");
 
+
+            //-------------------------Configure unique constraints
+
             modelBuilder.Entity<User>()
                 .HasIndex(x => x.Username)
                 .IsUnique();
@@ -49,21 +52,25 @@ namespace LibraryManagement.Infrastructure.Data
                 .IsUnique();
 
 
-            //-------------------------Configure entity relationships
+            //-------------------------Configure relationships
+
             modelBuilder.Entity<Book>()
                 .HasOne(book => book.Category)
-                .WithMany(Category => Category.Books)
-                .HasForeignKey(book => book.CategoryId);
+                .WithMany(category => category.Books)
+                .HasForeignKey(book => book.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<BookLoan>()
                 .HasOne(loan => loan.Book)
                 .WithMany(book => book.BookLoans)
-                .HasForeignKey(loan => loan.BookId);
+                .HasForeignKey(loan => loan.BookId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<BookLoan>()
                 .HasOne(loan => loan.User)
                 .WithMany(user => user.BookLoans)
-                .HasForeignKey(loan => loan.UserId);
+                .HasForeignKey(loan => loan.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

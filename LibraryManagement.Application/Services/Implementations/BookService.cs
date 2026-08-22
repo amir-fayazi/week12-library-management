@@ -54,8 +54,8 @@ namespace LibraryManagement.Application.Services.Implementations
         {
             
             var book = GetBookById(bookId);
-            if(book.BookLoans.Any(l => !l.IsReturned))
-                throw new BusinessRuleException("Cannot delete borrowed book");
+            if(book.BookLoans.Any())
+                throw new BusinessRuleException("Cannot delete book because loan history exists.");
 
             _bookRepo.Delete(bookId);
         }
