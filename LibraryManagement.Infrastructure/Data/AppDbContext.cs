@@ -17,5 +17,24 @@ namespace LibraryManagement.Infrastructure.Data
             optionsBuilder.UseSqlServer(
                  @"Server=.;Database=Week12-LibraryManagementDb;Integrated Security=True;TrustServerCertificate=True;");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .Property(x => x.Id)
+                .HasColumnName("UserId");
+
+            modelBuilder.Entity<Book>()
+                .Property(x => x.Id)
+                .HasColumnName("BookId");
+
+            modelBuilder.Entity<Category>()
+                .Property(x => x.Id)
+                .HasColumnName("CategoryId");
+
+            modelBuilder.Entity<BookLoan>()
+                .Property(x => x.Id)
+                .HasColumnName("BookLoanId");
+        }
     }
 }
