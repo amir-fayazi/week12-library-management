@@ -71,6 +71,23 @@ namespace LibraryManagement.Infrastructure.Data
                 .WithMany(user => user.BookLoans)
                 .HasForeignKey(loan => loan.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            //-------------------------------length
+            modelBuilder.Entity<User>()
+            .Property(x => x.Username)
+             .HasMaxLength(30);
+
+            modelBuilder.Entity<User>()
+                .Property(x => x.Password)
+                .HasMaxLength(50);
+
+            modelBuilder.Entity<Category>()
+                .Property(x => x.Name)
+                .HasMaxLength(50);
+
+            modelBuilder.Entity<Book>()
+                .Property(x => x.Title)
+                .HasMaxLength(150);
         }
     }
 }
