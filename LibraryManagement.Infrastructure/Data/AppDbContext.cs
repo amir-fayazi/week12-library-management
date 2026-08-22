@@ -47,7 +47,23 @@ namespace LibraryManagement.Infrastructure.Data
             modelBuilder.Entity<Book>()
                 .HasIndex(x => x.Title)
                 .IsUnique();
-                
+
+
+            //-------------------------relation config
+            modelBuilder.Entity<Book>()
+                .HasOne(book => book.Category)
+                .WithMany(Category => Category.Books)
+                .HasForeignKey(book => book.CategoryId);
+
+            modelBuilder.Entity<BookLoan>()
+                .HasOne(loan => loan.Book)
+                .WithMany(book => book.BookLoans)
+                .HasForeignKey(loan => loan.BookId);
+
+            modelBuilder.Entity<BookLoan>()
+                .HasOne(loan => loan.User)
+                .WithMany(user => user.BookLoans)
+                .HasForeignKey(loan => loan.UserId);
         }
     }
 }
