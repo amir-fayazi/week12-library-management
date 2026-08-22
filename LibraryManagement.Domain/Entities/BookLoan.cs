@@ -7,7 +7,9 @@ namespace LibraryManagement.Domain.Entities
     public class BookLoan : BaseEntity
     {
         public Book Book { get; private set; } 
+        public int BookId { get; private set; } 
         public User User { get; private set; }
+        public int UserId { get; private set; }
         public DateOnly BorrowDate { get; private set; }
         public bool IsReturned { get; private set; } = false;
 
