@@ -35,6 +35,19 @@ namespace LibraryManagement.Infrastructure.Data
             modelBuilder.Entity<BookLoan>()
                 .Property(x => x.Id)
                 .HasColumnName("BookLoanId");
+
+            modelBuilder.Entity<User>()
+                .HasIndex(x => x.Username)
+                .IsUnique();
+
+            modelBuilder.Entity<Category>()
+                .HasIndex(x => x.Name)
+                .IsUnique();
+
+            modelBuilder.Entity<Book>()
+                .HasIndex(x => x.Title)
+                .IsUnique();
+                
         }
     }
 }
