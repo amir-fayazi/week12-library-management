@@ -49,7 +49,7 @@ namespace LibraryManagement.Infrastructure.Data
                 .IsUnique();
 
 
-            //-------------------------relation config
+            //-------------------------Configure entity relationships
             modelBuilder.Entity<Book>()
                 .HasOne(book => book.Category)
                 .WithMany(Category => Category.Books)
