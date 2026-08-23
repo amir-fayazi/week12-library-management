@@ -39,6 +39,7 @@ namespace LibraryManagement.Presentation.Menus
                 Console.WriteLine("2. View Books");
                 Console.WriteLine("3. Borrow Book");
                 Console.WriteLine("4. View My Loans");
+                Console.WriteLine("5. Return Book");
                 Console.WriteLine("0. Logout");
 
                 Console.Write("Select: ");
@@ -62,6 +63,9 @@ namespace LibraryManagement.Presentation.Menus
 
                     case "4":
                         ShowMyLoans();
+                        break;
+                    case "5":
+                        ReturnBook();
                         break;
 
                     case "0":
@@ -177,6 +181,45 @@ namespace LibraryManagement.Presentation.Menus
 
             Console.WriteLine();
             Console.WriteLine("Press any key to back...");
+            Console.ReadKey();
+        }
+
+        private void ReturnBook()
+        {
+            Console.Clear();
+
+            Console.WriteLine("===== Return Book =====");
+
+            var loans = _bookLoansService.GetUserLoans(_userId);
+
+            ConsolePainter.WriteTable(
+                loans,
+                ConsoleColor.Blue,
+                ConsoleColor.White);
+
+            Console.WriteLine();
+
+            Console.Write("Book Loan Id: ");
+            var loanIdInput = Console.ReadLine();
+
+            if (!int.TryParse(loanIdInput, out int bookLoanId))
+            {
+                Console.WriteLine("Invalid book loan id.");
+                Console.ReadKey();
+                return;
+            }
+
+            try
+            {
+                _bookLoansService.ReturnBook(_userId, bookLoanId);
+
+                Console.WriteLine("Book returned successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
             Console.ReadKey();
         }
     }

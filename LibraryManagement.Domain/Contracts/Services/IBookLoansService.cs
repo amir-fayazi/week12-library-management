@@ -8,7 +8,7 @@ namespace LibraryManagement.Domain.Contracts.Services
     {
         BookLoan CreateLoanBook(int userId, int bookId);
 
-        void ReturnBook(int bookLoanId);
+        void ReturnBook(int userId, int bookLoanId);
 
         List<BookLoan> GetUserLoans(int userId);
 

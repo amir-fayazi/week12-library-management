@@ -58,9 +58,16 @@ namespace LibraryManagement.Application.Services.Implementations
             return loan;
         }
 
-        public void ReturnBook(int bookLoanId)
+        public void ReturnBook(int userId, int bookLoanId)
         {
+            
             var bookLoan = _loanRepo.GetById(bookLoanId) ?? throw new NotFoundException("Book loan not found");
+
+            if (bookLoan.UserId != userId)
+                throw new BusinessRuleException("This loan does not belong to this user.");
+
+            if (bookLoan.IsReturned)
+                throw new BusinessRuleException("Book has already been returned.");
 
             bookLoan.MarkAsReturned();
             _loanRepo.Update(bookLoan);
