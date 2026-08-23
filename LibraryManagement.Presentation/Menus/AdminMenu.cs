@@ -8,11 +8,13 @@ namespace LibraryManagement.Presentation.Menus
     {
         private readonly ICategoryService _categoryService;
         private readonly IBookService _bookService;
+        private readonly IBookLoansService _bookLoansService;
 
-        public AdminMenu(ICategoryService categoryService, IBookService bookService)
+        public AdminMenu(ICategoryService categoryService, IBookService bookService, IBookLoansService bookLoansService)
         {
             _categoryService = categoryService;
             _bookService = bookService;
+            _bookLoansService = bookLoansService;
         }
         
         public void Show()
@@ -26,6 +28,7 @@ namespace LibraryManagement.Presentation.Menus
                 Console.WriteLine("2. Add Book");
                 Console.WriteLine("3. View Categories");
                 Console.WriteLine("4. View Books");
+                Console.WriteLine("5. View Active Loans");
                 Console.WriteLine("0. Logout");
 
                 Console.Write("Select: ");
@@ -48,6 +51,9 @@ namespace LibraryManagement.Presentation.Menus
 
                     case "4":
                         ShowBooks();
+                        break;
+                    case "5":
+                        ShowActiveLoans();
                         break;
 
                     case "0":
@@ -189,6 +195,24 @@ namespace LibraryManagement.Presentation.Menus
 
             ConsolePainter.WriteTable(
                 books,
+                ConsoleColor.Blue,
+                ConsoleColor.White);
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to back...");
+            Console.ReadKey();
+        }
+
+        private void ShowActiveLoans()
+        {
+            Console.Clear();
+
+            Console.WriteLine("===== Active Loans =====");
+
+            var activeLoans = _bookLoansService.GetActiveLoans();
+
+            ConsolePainter.WriteTable(
+                activeLoans,
                 ConsoleColor.Blue,
                 ConsoleColor.White);
 

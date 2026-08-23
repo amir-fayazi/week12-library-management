@@ -59,7 +59,7 @@ namespace LibraryManagement.Presentation.Menus
 
                     if (user.Role == RoleEnum.Admin)
                     {
-                        var adminMenu = new AdminMenu(_categoryService, _bookService);
+                        var adminMenu = new AdminMenu(_categoryService, _bookService, _bookLoansService);
                         adminMenu.Show();
                     }
                     else
