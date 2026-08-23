@@ -11,6 +11,7 @@ namespace LibraryManagement.Domain.Entities
         public User User { get; private set; }
         public int UserId { get; private set; }
         public DateOnly BorrowDate { get; private set; }
+        public DateOnly? ReturnDate { get; private set; }
         public bool IsReturned { get; private set; } = false;
 
         public BookLoan()
@@ -48,9 +49,13 @@ namespace LibraryManagement.Domain.Entities
                 throw new ValidationException("Borrow date cannot be in the future.");
         }
 
-        public void MarkAsReturned()
+        public void MarkAsReturned(DateOnly returnDate)
         {
+            if(IsReturned)
+                throw new BusinessRuleException("Book has already been returned.");
+
             IsReturned = true;
+            ReturnDate = returnDate;
         }
 
     }

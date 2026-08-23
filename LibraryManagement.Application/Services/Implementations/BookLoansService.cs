@@ -69,7 +69,10 @@ namespace LibraryManagement.Application.Services.Implementations
             if (bookLoan.IsReturned)
                 throw new BusinessRuleException("Book has already been returned.");
 
-            bookLoan.MarkAsReturned();
+            var returnDate = DateOnly.FromDateTime(DateTime.UtcNow);
+
+            bookLoan.MarkAsReturned(returnDate);
+
             _loanRepo.Update(bookLoan);
         }
     }
