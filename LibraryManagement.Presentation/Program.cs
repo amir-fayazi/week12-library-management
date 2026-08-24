@@ -6,38 +6,78 @@ using LibraryManagement.Infrastructure.Data;
 using LibraryManagement.Infrastructure.Repositories.EfCore;
 using LibraryManagement.Presentation.Menus;
 
+
+// Database Context
 var context = new AppDbContext();
 
-IBookRepository bookRepository = new EfBookRepository(context);
-ICategoryRepository categoryRepository = new EfCategoryRepository(context);
-IUserRepository userRepository = new EfUserRepository(context);
-IBookLoanRepository bookLoanRepository = new EfBookLoanRepository(context);
+
+// Repositories
+IBookRepository bookRepository =
+    new EfBookRepository(context);
+
+ICategoryRepository categoryRepository =
+    new EfCategoryRepository(context);
+
+IUserRepository userRepository =
+    new EfUserRepository(context);
+
+IBookLoanRepository bookLoanRepository =
+    new EfBookLoanRepository(context);
 
 
-IBookService bookService = new BookService(
-    bookRepository,
-    categoryRepository);
+// Services
+IBookService bookService =
+    new BookService(
+        bookRepository,
+        categoryRepository);
 
-ICategoryService categoryService = new CategoryService(
-    categoryRepository);
+ICategoryService categoryService =
+    new CategoryService(
+        categoryRepository);
 
-IBookLoansService bookLoansService = new BookLoansService(
-    bookLoanRepository,
-    userRepository,
-    bookRepository);
+IBookLoansService bookLoansService =
+    new BookLoansService(
+        bookLoanRepository,
+        userRepository,
+        bookRepository);
 
-IAuthService authService = new AuthService(
-    userRepository);
+IAuthService authService =
+    new AuthService(
+        userRepository);
 
 
-var loginMenu = new LoginMenu(
-    authService,
-    categoryService,
-    bookService,
-    bookLoansService);
+// Admin Sub Menus
+var categoryMenu =
+    new CategoryMenu(categoryService);
 
-var registerMenu = new RegisterMenu(authService);
+var bookMenu =
+    new BookMenu(
+        bookService,
+        categoryService);
 
+
+// Admin Menu
+var adminMenu =
+    new AdminMenu(
+        categoryMenu,
+        bookMenu,
+        bookLoansService);
+
+
+// Authentication Menus
+var loginMenu =
+    new LoginMenu(
+        authService,
+        adminMenu,
+        categoryService,
+        bookService,
+        bookLoansService);
+
+var registerMenu =
+    new RegisterMenu(authService);
+
+
+// Main Menu
 while (true)
 {
     Console.Clear();
@@ -48,9 +88,7 @@ while (true)
     Console.WriteLine("3. Exit");
 
     Console.Write("Select an option: ");
-
     var input = Console.ReadLine();
-
 
     switch (input)
     {
@@ -58,19 +96,16 @@ while (true)
             loginMenu.Show();
             break;
 
-
         case "2":
             registerMenu.Show();
             Console.ReadKey();
             break;
 
-
         case "3":
             return;
 
-
         default:
-            Console.WriteLine("Invalid option");
+            Console.WriteLine("Invalid option.");
             Console.ReadKey();
             break;
     }
