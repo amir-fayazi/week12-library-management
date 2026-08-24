@@ -20,9 +20,13 @@ namespace LibraryManagement.Application.Services.Implementations
         public void ChangeCategory(int bookId, int categoryId)
         {
             var book = GetBookById(bookId);
+            if (book is null)
+                throw new NotFoundException("Book not found");
+
             var category = _categoryRepo.GetById(categoryId);
             if (category is null)
                 throw new NotFoundException("Category not found");
+
             book.ChangeCategory(category);
 
             _bookRepo.Update(book);
