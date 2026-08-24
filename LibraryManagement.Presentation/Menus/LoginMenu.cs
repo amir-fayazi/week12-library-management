@@ -4,24 +4,30 @@ using LibraryManagement.Domain.Enums;
 using LibraryManagement.Domain.Exceptions;
 using LibraryManagement.Domain.Extensions;
 
-
 namespace LibraryManagement.Presentation.Menus
 {
     public class LoginMenu
     {
         private readonly IAuthService _authService;
+        private readonly AdminMenu _adminMenu;
         private readonly ICategoryService _categoryService;
         private readonly IBookService _bookService;
         private readonly IBookLoansService _bookLoansService;
+
         public LoginMenu(
-            IAuthService authService, ICategoryService categoryService, IBookService bookService, IBookLoansService bookLoansService
-            )
+            IAuthService authService,
+            AdminMenu adminMenu,
+            ICategoryService categoryService,
+            IBookService bookService,
+            IBookLoansService bookLoansService)
         {
             _authService = authService;
+            _adminMenu = adminMenu;
             _categoryService = categoryService;
             _bookService = bookService;
             _bookLoansService = bookLoansService;
         }
+
         public void Show()
         {
             while (true)
@@ -39,32 +45,29 @@ namespace LibraryManagement.Presentation.Menus
                 if (!username.IsValidText() || !password.IsValidText())
                 {
                     Console.WriteLine("Username and password are required.");
-                    Console.WriteLine();
-                    Console.WriteLine("1. Try again");
-                    Console.WriteLine("0. Back");
 
-                    var option = Console.ReadLine();
+                    if (AskTryAgain())
+                        continue;
 
-                    if (option == "0")
-                        return;
-
-                    continue;
+                    return;
                 }
 
                 try
                 {
                     User user = _authService.Login(username, password);
 
-                    Console.Clear();
-
                     if (user.Role == RoleEnum.Admin)
                     {
-                        var adminMenu = new AdminMenu(_categoryService, _bookService, _bookLoansService);
-                        adminMenu.Show();
+                        _adminMenu.Show();
                     }
                     else
                     {
-                        var userMenu = new UserMenu(user.Id, _categoryService, _bookService, _bookLoansService);
+                        var userMenu = new UserMenu(
+                            user.Id,
+                            _categoryService,
+                            _bookService,
+                            _bookLoansService);
+
                         userMenu.Show();
                     }
 
@@ -73,17 +76,25 @@ namespace LibraryManagement.Presentation.Menus
                 catch (InvalidCredentialsException ex)
                 {
                     Console.WriteLine(ex.Message);
-                    Console.WriteLine();
 
-                    Console.WriteLine("1. Try again");
-                    Console.WriteLine("0. Back");
+                    if (AskTryAgain())
+                        continue;
 
-                    var option = Console.ReadLine();
-
-                    if (option == "0")
-                        return;
+                    return;
                 }
             }
+        }
+
+        private bool AskTryAgain()
+        {
+            Console.WriteLine();
+            Console.WriteLine("1. Try again");
+            Console.WriteLine("0. Back");
+            Console.Write("Select: ");
+
+            var option = Console.ReadLine();
+
+            return option == "1";
         }
     }
 }
