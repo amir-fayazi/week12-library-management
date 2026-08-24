@@ -1,8 +1,6 @@
 ﻿using ADO.NetDemoConsoleApp;
 using LibraryManagement.Domain.Contracts.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using LibraryManagement.Domain.Exceptions;
 
 namespace LibraryManagement.Presentation.Menus
 {
@@ -43,9 +41,7 @@ namespace LibraryManagement.Presentation.Menus
                 Console.WriteLine("0. Logout");
 
                 Console.Write("Select: ");
-
                 var input = Console.ReadLine();
-
 
                 switch (input)
                 {
@@ -64,6 +60,7 @@ namespace LibraryManagement.Presentation.Menus
                     case "4":
                         ShowMyLoans();
                         break;
+
                     case "5":
                         ReturnBook();
                         break;
@@ -72,7 +69,7 @@ namespace LibraryManagement.Presentation.Menus
                         return;
 
                     default:
-                        Console.WriteLine("Invalid option");
+                        Console.WriteLine("Invalid option.");
                         Console.ReadKey();
                         break;
                 }
@@ -91,7 +88,6 @@ namespace LibraryManagement.Presentation.Menus
                 ConsoleColor.Blue,
                 ConsoleColor.White);
 
-
             Console.WriteLine();
             Console.WriteLine("Press any key to back...");
             Console.ReadKey();
@@ -102,13 +98,7 @@ namespace LibraryManagement.Presentation.Menus
         {
             Console.Clear();
 
-            var books = _bookService.GetAllBooks();
-
-            ConsolePainter.WriteTable(
-                books,
-                ConsoleColor.Blue,
-                ConsoleColor.White);
-
+            ShowBooksTable();
 
             Console.WriteLine();
             Console.WriteLine("Press any key to back...");
@@ -124,28 +114,22 @@ namespace LibraryManagement.Presentation.Menus
 
                 Console.WriteLine("===== Borrow Book =====");
 
-
-                var availableBooks = _bookService.GetAllAvailableBooks();
-
-                ConsolePainter.WriteTable(
-                    availableBooks,
-                    ConsoleColor.Blue,
-                    ConsoleColor.White);
-
+                ShowAvailableBooksTable();
 
                 Console.WriteLine();
-
                 Console.Write("Book Id: ");
-                var bookIdInput = Console.ReadLine();
 
+                var bookIdInput = Console.ReadLine();
 
                 if (!int.TryParse(bookIdInput, out int bookId))
                 {
                     Console.WriteLine("Invalid book id.");
-                    Console.ReadKey();
-                    continue;
-                }
 
+                    if (AskTryAgain())
+                        continue;
+
+                    return;
+                }
 
                 try
                 {
@@ -156,10 +140,40 @@ namespace LibraryManagement.Presentation.Menus
 
                     return;
                 }
+                catch (NotFoundException ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                    if (AskTryAgain())
+                        continue;
+
+                    return;
+                }
+                catch (BusinessRuleException ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                    if (AskTryAgain())
+                        continue;
+
+                    return;
+                }
+                catch (ValidationException ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                    if (AskTryAgain())
+                        continue;
+
+                    return;
+                }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                    Console.ReadKey();
+
+                    if (AskTryAgain())
+                        continue;
+
                     return;
                 }
             }
@@ -170,58 +184,122 @@ namespace LibraryManagement.Presentation.Menus
         {
             Console.Clear();
 
-            var loans = _bookLoansService.GetUserLoans(_userId);
-
-
-            ConsolePainter.WriteTable(
-                loans,
-                ConsoleColor.Blue,
-                ConsoleColor.White);
-
+            ShowUserLoansTable();
 
             Console.WriteLine();
             Console.WriteLine("Press any key to back...");
             Console.ReadKey();
         }
 
+
         private void ReturnBook()
         {
-            Console.Clear();
+            while (true)
+            {
+                Console.Clear();
 
-            Console.WriteLine("===== Return Book =====");
+                Console.WriteLine("===== Return Book =====");
 
+                ShowUserLoansTable();
+
+                Console.WriteLine();
+                Console.Write("Book Loan Id: ");
+
+                var loanIdInput = Console.ReadLine();
+
+                if (!int.TryParse(loanIdInput, out int bookLoanId))
+                {
+                    Console.WriteLine("Invalid book loan id.");
+
+                    if (AskTryAgain())
+                        continue;
+
+                    return;
+                }
+
+                try
+                {
+                    _bookLoansService.ReturnBook(_userId, bookLoanId);
+
+                    Console.WriteLine("Book returned successfully.");
+                    Console.ReadKey();
+
+                    return;
+                }
+                catch (NotFoundException ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                    if (AskTryAgain())
+                        continue;
+
+                    return;
+                }
+                catch (BusinessRuleException ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                    if (AskTryAgain())
+                        continue;
+
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+
+                    if (AskTryAgain())
+                        continue;
+
+                    return;
+                }
+            }
+        }
+
+
+        private void ShowBooksTable()
+        {
+            var books = _bookService.GetAllBooks();
+
+            ConsolePainter.WriteTable(
+                books,
+                ConsoleColor.Blue,
+                ConsoleColor.White);
+        }
+
+
+        private void ShowAvailableBooksTable()
+        {
+            var availableBooks = _bookService.GetAllAvailableBooks();
+
+            ConsolePainter.WriteTable(
+                availableBooks,
+                ConsoleColor.Blue,
+                ConsoleColor.White);
+        }
+
+
+        private void ShowUserLoansTable()
+        {
             var loans = _bookLoansService.GetUserLoans(_userId);
 
             ConsolePainter.WriteTable(
                 loans,
                 ConsoleColor.Blue,
                 ConsoleColor.White);
+        }
 
+
+        private bool AskTryAgain()
+        {
             Console.WriteLine();
+            Console.WriteLine("1. Try again");
+            Console.WriteLine("0. Back");
+            Console.Write("Select: ");
 
-            Console.Write("Book Loan Id: ");
-            var loanIdInput = Console.ReadLine();
+            var option = Console.ReadLine();
 
-            if (!int.TryParse(loanIdInput, out int bookLoanId))
-            {
-                Console.WriteLine("Invalid book loan id.");
-                Console.ReadKey();
-                return;
-            }
-
-            try
-            {
-                _bookLoansService.ReturnBook(_userId, bookLoanId);
-
-                Console.WriteLine("Book returned successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            Console.ReadKey();
+            return option == "1";
         }
     }
 }
-
