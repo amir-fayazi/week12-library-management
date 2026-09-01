@@ -12,6 +12,7 @@ namespace LibraryManagement.Domain.Entities
         public string Password { get; private set; }
         public RoleEnum Role { get; private set; }
         public List<BookLoan> BookLoans { get; private set; } = [];
+        public List<Review> Reviews { get; set; } = [];
 
         public User(string username, string password, RoleEnum role)
         {

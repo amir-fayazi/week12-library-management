@@ -13,6 +13,7 @@ namespace LibraryManagement.Domain.Entities
         public int CategoryId { get; private set; }
         public List<BookLoan> BookLoans { get; private set; } = [];
 
+        public List<Review> Reviews { get; set; } = [];
         public Book()
         {
             
