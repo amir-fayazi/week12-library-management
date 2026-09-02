@@ -2,6 +2,7 @@
 
 using LibraryManagement.Domain.Contracts.Repositories;
 using LibraryManagement.Domain.Entities;
+using LibraryManagement.Domain.Enums;
 using LibraryManagement.Domain.Exceptions;
 using LibraryManagement.Infrastructure.Data;
 
@@ -35,6 +36,12 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
             return _context.Reviews.Any(r => r.UserId == userId && r.BookId == bookId);
         }
 
+        public IEnumerable<Review> GetApprovedReviewsByBookId(int bookId)
+        {
+            return [.._context.Reviews
+                .Where(x=>x.BookId == bookId && x.Status == ReviewStatusEnum.Approved)];
+        }
+
         public IEnumerable<Review> GetByBookId(int bookId)
         {
             return [.. _context.Reviews.Where(r => r.BookId == bookId)];
@@ -50,10 +57,24 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
             return review;
         }
 
+        public IEnumerable<Review> GetByUserId(int userId)
+        {
+            return [.._context.Reviews
+               .Where(x => x.UserId == userId)];
+        }
+
+        public IEnumerable<Review> GetPendingReviews()
+        {
+            return [.._context.Reviews
+               .Where(x=>x.Status == ReviewStatusEnum.Pending)];
+        }
+
         public void Update(Review review)
         {
             _context.Reviews.Update(review);
             _context.SaveChanges();
         }
+
+        
     }
 }

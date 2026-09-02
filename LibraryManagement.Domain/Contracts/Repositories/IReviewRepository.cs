@@ -11,6 +11,11 @@ namespace LibraryManagement.Domain.Contracts.Repositories
         void Update(Review updateReview);
         Review GetById(int id);
         bool ExistsByUserAndBook(int userId, int bookId);
-        IEnumerable<Review> GetByBookId(int bookId);
+
+        //--------------------
+        
+        IEnumerable<Review> GetApprovedReviewsByBookId(int bookId); 
+        IEnumerable<Review> GetPendingReviews(); 
+        IEnumerable<Review> GetByUserId(int userId);
     }
 }

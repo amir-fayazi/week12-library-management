@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Domain.Exceptions;
+﻿using LibraryManagement.Domain.Enums;
+using LibraryManagement.Domain.Exceptions;
 using LibraryManagement.Domain.Extensions;
 
 namespace LibraryManagement.Domain.Entities
@@ -37,12 +38,13 @@ namespace LibraryManagement.Domain.Entities
         public int Rating { get; private set; }
 
         public DateTime CreatedAt { get; private set; }
-        public DateTime UpdatedAt { get; private set; }
-
+        public DateTime? UpdatedAt { get; private set; }
+        public ReviewStatusEnum Status { get; private set; } = ReviewStatusEnum.Pending;
 
         public User User { get; private set; } = null!;
 
         public Book Book { get; private set; } = null!;
+
 
 
         public void EditComment(string editedText)
@@ -55,8 +57,6 @@ namespace LibraryManagement.Domain.Entities
             Comment = editedText;
             UpdatedAt = DateTime.UtcNow;
         }
-
-
         public void ChangeRating(int newRating)
         {
             ValidateRating(newRating);
@@ -67,15 +67,28 @@ namespace LibraryManagement.Domain.Entities
 
             Rating = newRating;
         }
+        public void Approve()
+        {
+            if (Status != ReviewStatusEnum.Pending)
+                throw new BusinessRuleException("Only pending reviews can be approved.");
+            Status = ReviewStatusEnum.Approved;
+        }
+        public void Reject()
+        {
+            if (Status != ReviewStatusEnum.Pending)
+                throw new BusinessRuleException("Only pending reviews can be rejected.");
+            Status = ReviewStatusEnum.Rejected;
+        }
 
 
+
+        #region Validation
         private void ValidateRating(int rating)
         {
             if (rating < 1 || rating > 5)
                 throw new ValidationException(
                     "Rating must be between 1 and 5.");
         }
-
 
         private void ValidateComment(string? comment)
         {
@@ -84,7 +97,6 @@ namespace LibraryManagement.Domain.Entities
                     "Comment length cannot be more than 1000 characters.");
         }
 
-
         private void ValidateUserId(int userId)
         {
             if (userId <= 0)
@@ -92,12 +104,13 @@ namespace LibraryManagement.Domain.Entities
                     "UserId must be greater than zero.");
         }
 
-
         private void ValidateBookId(int bookId)
         {
             if (bookId <= 0)
                 throw new ValidationException(
                     "BookId must be greater than zero.");
         }
+        
+        #endregion
     }
 }
