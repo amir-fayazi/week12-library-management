@@ -9,7 +9,7 @@ namespace LibraryManagement.Domain.Contracts.Repositories
     {
         User Add(User newUser);
 
-        User? GetById(int id);
+        User GetById(int id);
         User? GetByUsername(string username);
         bool ExistsByUsername(string username);
         List<User> GetAll();

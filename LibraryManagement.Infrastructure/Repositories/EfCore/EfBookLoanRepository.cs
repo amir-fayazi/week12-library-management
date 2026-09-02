@@ -49,9 +49,14 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
                 .FirstOrDefault();
         }
 
-        public BookLoan? GetById(int id)
+        public BookLoan GetById(int id)
         {
-            return _context.BookLoans.Find(id);
+            var loan = _context.BookLoans.Find(id);
+
+            if (loan is null)
+                throw new NotFoundException($"Loan with Id: {id} not found.");
+
+            return loan;
         }
 
         public bool IsAvailable(int bookId)
@@ -74,6 +79,12 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
             return _context.BookLoans
                 .Where(x => x.User.Id == userId)
                 .ToList();
+        }
+
+        public bool HasUserBorrowedBook(int userId, int bookId)
+        {
+            return _context.BookLoans
+                 .Any(x => x.UserId == userId && x.BookId == bookId);
         }
     }
 }

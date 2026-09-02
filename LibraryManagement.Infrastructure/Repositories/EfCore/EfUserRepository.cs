@@ -42,9 +42,14 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
             return _context.Users.ToList();
         }
 
-        public User? GetById(int id)
+        public User GetById(int id)
         {
-            return _context.Users.Find(id);
+            var user = _context.Users.Find(id);
+
+            if (review is null)
+                throw new NotFoundException($"User with Id: {id} not found.");
+
+            return user;
         }
 
         public User? GetByUsername(string username)

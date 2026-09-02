@@ -1,5 +1,6 @@
 ﻿
 
+using LibraryManagement.Domain.DTOs;
 using LibraryManagement.Domain.Entities;
 
 namespace LibraryManagement.Domain.Contracts.Services
@@ -12,7 +13,7 @@ namespace LibraryManagement.Domain.Contracts.Services
         void ChangeComment(int userId, int reviewId, string comment);
 
         //=========================================
-        IEnumerable<Review> GetAllUserReviews(int userId);
+        IEnumerable<UserReviewDto> GetAllUserReviews(int userId);
         void ApproveReview(int reviewId);
         void RejectReview(int reviewId);
     }

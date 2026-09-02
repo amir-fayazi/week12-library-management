@@ -1,6 +1,7 @@
 ﻿
 
 using LibraryManagement.Domain.Contracts.Repositories;
+using LibraryManagement.Domain.DTOs;
 using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Enums;
 using LibraryManagement.Domain.Exceptions;
@@ -51,16 +52,26 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
         {
             var review = _context.Reviews.Find(id);
 
-            if(review is null)
+            if (review is null)
                 throw new NotFoundException($"Review with Id: {id} not found.");
 
             return review;
         }
 
-        public IEnumerable<Review> GetByUserId(int userId)
+        public IEnumerable<UserReviewDto> GetByUserId(int userId)
         {
             return [.._context.Reviews
-               .Where(x => x.UserId == userId)];
+               .Where(x => x.UserId == userId)
+               .Select(x=> new UserReviewDto()
+               {
+                   BookTitle = x.Book.Title,
+                   Comment = x.Comment,
+                   Rating = x.Rating,
+                   Status = x.Status,
+                   ReviewId = x.Id,
+                   CreatedAt = x.CreatedAt,
+                   UpdatedAt = x.UpdatedAt
+               })];
         }
 
         public IEnumerable<Review> GetPendingReviews()

@@ -7,7 +7,7 @@ namespace LibraryManagement.Domain.Contracts.Repositories
     {
         Book Add(Book newBook);
 
-        Book? GetById(int id);
+        Book GetById(int id);
         bool ExistsByTitle(string title);
 
         List<Book> GetAll();

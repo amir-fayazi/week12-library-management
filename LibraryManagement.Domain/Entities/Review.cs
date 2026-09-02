@@ -79,6 +79,12 @@ namespace LibraryManagement.Domain.Entities
                 throw new BusinessRuleException("Only pending reviews can be rejected.");
             Status = ReviewStatusEnum.Rejected;
         }
+        public void Pending()
+        {
+            if (Status == ReviewStatusEnum.Pending)
+                throw new BusinessRuleException("Only rejected and approved reviews can be pending.");
+            Status = ReviewStatusEnum.Pending;
+        }
 
 
 

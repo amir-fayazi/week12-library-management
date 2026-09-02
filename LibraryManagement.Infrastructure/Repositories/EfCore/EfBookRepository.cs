@@ -50,9 +50,14 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
             return _context.BookLoans.Where(p => !p.IsReturned).Select(p => p.Book).ToList();
         }
 
-        public Book? GetById(int id)
+        public Book GetById(int id)
         {
-            return _context.Books.Find(id);
+            var book = _context.Books.Find(id);
+
+            if (book is null)
+                throw new NotFoundException($"Book with Id: {id} not found.");
+
+            return book;
         }
         public List<Book> GetByCategoryId(int categoryId)
         {

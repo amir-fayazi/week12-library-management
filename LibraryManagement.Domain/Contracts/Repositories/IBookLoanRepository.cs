@@ -17,5 +17,8 @@ namespace LibraryManagement.Domain.Contracts.Repositories
 
         public List<BookLoan> GetActiveLoans();
         List<BookLoan> GetUserLoans(int userId);
+
+        //
+        bool HasUserBorrowedBook(int userId, int bookId);
     }
 }

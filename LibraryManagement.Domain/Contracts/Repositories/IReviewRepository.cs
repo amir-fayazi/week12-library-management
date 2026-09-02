@@ -1,5 +1,6 @@
 ﻿
 
+using LibraryManagement.Domain.DTOs;
 using LibraryManagement.Domain.Entities;
 
 namespace LibraryManagement.Domain.Contracts.Repositories
@@ -16,6 +17,6 @@ namespace LibraryManagement.Domain.Contracts.Repositories
         
         IEnumerable<Review> GetApprovedReviewsByBookId(int bookId); 
         IEnumerable<Review> GetPendingReviews(); 
-        IEnumerable<Review> GetByUserId(int userId);
+        IEnumerable<UserReviewDto> GetByUserId(int userId);
     }
 }
