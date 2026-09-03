@@ -13,11 +13,11 @@ namespace LibraryManagement.Domain.Contracts.Services
         void ChangeComment(int userId, int reviewId, string? comment);
 
         
-        IEnumerable<UserReviewDto> GetAllUserReviews(int userId);
         void ApproveReview(int reviewId);
         void RejectReview(int reviewId);
 
         //===================
+        IEnumerable<UserReviewDto> GetAllUserReviews(int userId);
         IEnumerable<ApprovedReviewDto> GetApprovedReviewsByBookId(int bookId);
 
         IEnumerable<PendingReviewDto> GetPendingReviews();
