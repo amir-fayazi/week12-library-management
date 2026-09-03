@@ -9,22 +9,23 @@ namespace LibraryManagement.Presentation.Menus
         private readonly ICategoryService _categoryService;
         private readonly IBookService _bookService;
         private readonly IBookLoansService _bookLoansService;
+        private readonly UserReviewMenu _userReviewMenu;
 
         private readonly int _userId;
-
 
         public UserMenu(
             int userId,
             ICategoryService categoryService,
             IBookService bookService,
-            IBookLoansService bookLoansService)
+            IBookLoansService bookLoansService,
+            UserReviewMenu userReviewMenu)
         {
             _userId = userId;
             _categoryService = categoryService;
             _bookService = bookService;
             _bookLoansService = bookLoansService;
+            _userReviewMenu = userReviewMenu;
         }
-
 
         public void Show()
         {
@@ -35,9 +36,10 @@ namespace LibraryManagement.Presentation.Menus
                 Console.WriteLine("===== User Menu =====");
                 Console.WriteLine("1. View Categories");
                 Console.WriteLine("2. View Books");
-                Console.WriteLine("3. Borrow Book");
-                Console.WriteLine("4. View My Loans");
+                Console.WriteLine("3. View My Loans");
+                Console.WriteLine("4. Borrow Book");
                 Console.WriteLine("5. Return Book");
+                Console.WriteLine("6. Manage Reviews");
                 Console.WriteLine("0. Logout");
 
                 Console.Write("Select: ");
@@ -54,15 +56,19 @@ namespace LibraryManagement.Presentation.Menus
                         break;
 
                     case "3":
-                        BorrowBook();
+                        ShowMyLoans();
                         break;
 
                     case "4":
-                        ShowMyLoans();
+                        BorrowBook();
                         break;
 
                     case "5":
                         ReturnBook();
+                        break;
+
+                    case "6":
+                        _userReviewMenu.Show();
                         break;
 
                     case "0":
@@ -75,7 +81,6 @@ namespace LibraryManagement.Presentation.Menus
                 }
             }
         }
-
 
         private void ShowCategories()
         {
@@ -93,7 +98,6 @@ namespace LibraryManagement.Presentation.Menus
             Console.ReadKey();
         }
 
-
         private void ShowBooks()
         {
             Console.Clear();
@@ -104,7 +108,6 @@ namespace LibraryManagement.Presentation.Menus
             Console.WriteLine("Press any key to back...");
             Console.ReadKey();
         }
-
 
         private void BorrowBook()
         {
@@ -179,7 +182,6 @@ namespace LibraryManagement.Presentation.Menus
             }
         }
 
-
         private void ShowMyLoans()
         {
             Console.Clear();
@@ -190,7 +192,6 @@ namespace LibraryManagement.Presentation.Menus
             Console.WriteLine("Press any key to back...");
             Console.ReadKey();
         }
-
 
         private void ReturnBook()
         {
@@ -256,7 +257,6 @@ namespace LibraryManagement.Presentation.Menus
             }
         }
 
-
         private void ShowBooksTable()
         {
             var books = _bookService.GetAllBooks();
@@ -266,7 +266,6 @@ namespace LibraryManagement.Presentation.Menus
                 ConsoleColor.Blue,
                 ConsoleColor.White);
         }
-
 
         private void ShowAvailableBooksTable()
         {
@@ -278,7 +277,6 @@ namespace LibraryManagement.Presentation.Menus
                 ConsoleColor.White);
         }
 
-
         private void ShowUserLoansTable()
         {
             var loans = _bookLoansService.GetUserLoans(_userId);
@@ -288,7 +286,6 @@ namespace LibraryManagement.Presentation.Menus
                 ConsoleColor.Blue,
                 ConsoleColor.White);
         }
-
 
         private bool AskTryAgain()
         {

@@ -24,12 +24,16 @@ IUserRepository userRepository =
 IBookLoanRepository bookLoanRepository =
     new EfBookLoanRepository(context);
 
+IReviewRepository reviewRepository =
+    new EfReviewRepository(context);
+
 
 // Services
 IBookService bookService =
     new BookService(
         bookRepository,
-        categoryRepository);
+        categoryRepository,
+        reviewRepository);
 
 ICategoryService categoryService =
     new CategoryService(
@@ -45,6 +49,13 @@ IAuthService authService =
     new AuthService(
         userRepository);
 
+IReviewService reviewService =
+    new ReviewService(
+        userRepository,
+        bookRepository,
+        reviewRepository,
+        bookLoanRepository);
+
 
 // Admin Sub Menus
 var categoryMenu =
@@ -55,13 +66,35 @@ var bookMenu =
         bookService,
         categoryService);
 
+var adminReviewMenu =
+    new AdminReviewMenu(reviewService);
+
 
 // Admin Menu
 var adminMenu =
     new AdminMenu(
         categoryMenu,
         bookMenu,
+        adminReviewMenu,
         bookLoansService);
+
+
+// User Menu Factory
+Func<int, UserMenu> userMenuFactory = userId =>
+{
+    var userReviewMenu =
+        new UserReviewMenu(
+            userId,
+            reviewService,
+            bookService);
+
+    return new UserMenu(
+        userId,
+        categoryService,
+        bookService,
+        bookLoansService,
+        userReviewMenu);
+};
 
 
 // Authentication Menus
@@ -69,9 +102,7 @@ var loginMenu =
     new LoginMenu(
         authService,
         adminMenu,
-        categoryService,
-        bookService,
-        bookLoansService);
+        userMenuFactory);
 
 var registerMenu =
     new RegisterMenu(authService);

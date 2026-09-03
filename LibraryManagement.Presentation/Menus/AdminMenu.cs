@@ -7,15 +7,18 @@ namespace LibraryManagement.Presentation.Menus
     {
         private readonly CategoryMenu _categoryMenu;
         private readonly BookMenu _bookMenu;
+        private readonly AdminReviewMenu _adminReviewMenu;
         private readonly IBookLoansService _bookLoansService;
 
         public AdminMenu(
             CategoryMenu categoryMenu,
             BookMenu bookMenu,
+            AdminReviewMenu adminReviewMenu,
             IBookLoansService bookLoansService)
         {
             _categoryMenu = categoryMenu;
             _bookMenu = bookMenu;
+            _adminReviewMenu = adminReviewMenu;
             _bookLoansService = bookLoansService;
         }
 
@@ -28,7 +31,8 @@ namespace LibraryManagement.Presentation.Menus
                 Console.WriteLine("===== Admin Menu =====");
                 Console.WriteLine("1. Manage Categories");
                 Console.WriteLine("2. Manage Books");
-                Console.WriteLine("3. View Active Loans");
+                Console.WriteLine("3. Manage Reviews");
+                Console.WriteLine("4. View Active Loans");
                 Console.WriteLine("0. Logout");
 
                 Console.Write("Select: ");
@@ -45,6 +49,10 @@ namespace LibraryManagement.Presentation.Menus
                         break;
 
                     case "3":
+                        _adminReviewMenu.Show();
+                        break;
+
+                    case "4":
                         ShowActiveLoans();
                         break;
 

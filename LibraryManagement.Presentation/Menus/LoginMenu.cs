@@ -13,19 +13,17 @@ namespace LibraryManagement.Presentation.Menus
         private readonly ICategoryService _categoryService;
         private readonly IBookService _bookService;
         private readonly IBookLoansService _bookLoansService;
-
+        private readonly IReviewService _reviewService;
+        private readonly Func<int, UserMenu> _userMenuFactory;
         public LoginMenu(
             IAuthService authService,
             AdminMenu adminMenu,
-            ICategoryService categoryService,
-            IBookService bookService,
-            IBookLoansService bookLoansService)
+            Func<int, UserMenu> userMenuFactory
+            )
         {
             _authService = authService;
             _adminMenu = adminMenu;
-            _categoryService = categoryService;
-            _bookService = bookService;
-            _bookLoansService = bookLoansService;
+            _userMenuFactory = userMenuFactory;
         }
 
         public void Show()
@@ -44,7 +42,8 @@ namespace LibraryManagement.Presentation.Menus
 
                 if (!username.IsValidText() || !password.IsValidText())
                 {
-                    Console.WriteLine("Username and password are required.");
+                    Console.WriteLine(
+                        "Username and password are required.");
 
                     if (AskTryAgain())
                         continue;
@@ -54,7 +53,8 @@ namespace LibraryManagement.Presentation.Menus
 
                 try
                 {
-                    User user = _authService.Login(username, password);
+                    User user =
+                        _authService.Login(username, password);
 
                     if (user.Role == RoleEnum.Admin)
                     {
@@ -62,12 +62,7 @@ namespace LibraryManagement.Presentation.Menus
                     }
                     else
                     {
-                        var userMenu = new UserMenu(
-                            user.Id,
-                            _categoryService,
-                            _bookService,
-                            _bookLoansService);
-
+                        var userMenu = _userMenuFactory(user.Id);
                         userMenu.Show();
                     }
 
