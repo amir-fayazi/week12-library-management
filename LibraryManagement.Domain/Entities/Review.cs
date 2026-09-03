@@ -47,11 +47,9 @@ namespace LibraryManagement.Domain.Entities
 
 
 
-        public void EditComment(string editedText)
+        public void EditComment(string? editedText)
         {
-            if (!editedText.IsValidText())
-                throw new ValidationException("Comment cannot be empty.");
-
+            
             ValidateComment(editedText);
 
             Comment = editedText;

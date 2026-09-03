@@ -1,7 +1,5 @@
 ﻿using LibraryManagement.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace LibraryManagement.Domain.Contracts.Repositories
 {

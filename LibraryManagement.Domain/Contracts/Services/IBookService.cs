@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Domain.Entities;
+﻿using LibraryManagement.Domain.DTOs;
+using LibraryManagement.Domain.Entities;
 
 
 namespace LibraryManagement.Domain.Contracts.Services
@@ -14,6 +15,6 @@ namespace LibraryManagement.Domain.Contracts.Services
         void ChangeTitle(int bookId, string title);
         void ChangeCategory(int bookId, int categoryId);
         void DeleteBook(int bookId);
-        
+        BookResultDto GetBookDetails(int bookId);
     }
 }

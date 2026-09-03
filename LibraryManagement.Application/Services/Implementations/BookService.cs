@@ -2,6 +2,7 @@
 
 using LibraryManagement.Domain.Contracts.Repositories;
 using LibraryManagement.Domain.Contracts.Services;
+using LibraryManagement.Domain.DTOs;
 using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Exceptions;
 
@@ -85,7 +86,9 @@ namespace LibraryManagement.Application.Services.Implementations
             return _bookRepo.GetAllAvailable();
         }
 
-
-
+        public BookResultDto GetBookDetails(int bookId)
+        {
+            return [.._bookRepo.g]
+        }
     }
 }

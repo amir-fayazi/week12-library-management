@@ -38,7 +38,7 @@ namespace LibraryManagement.Application.Services.Implementations
             _reviewRepo.Update(review);
 
         }
-        public void ChangeComment(int userId, int reviewId, string comment)
+        public void ChangeComment(int userId, int reviewId, string? comment)
         {
             var review = _reviewRepo.GetById(reviewId);
             if (review.UserId != userId)
@@ -64,10 +64,12 @@ namespace LibraryManagement.Application.Services.Implementations
             var user = _userRepo.GetById(userId);
             var book = _bookRepo.GetById(bookId);
             if (!_loanRepo.HasUserBorrowedBook(userId, bookId))
-                throw new BusinessRuleException("");
+                throw new BusinessRuleException(
+    "You can only review books that you have borrowed.");
 
             if (_reviewRepo.ExistsByUserAndBook(userId, bookId))
-                throw new DuplicateException("duplicate review");
+                throw new DuplicateException(
+    "You have already reviewed this book.");
 
             var review = new Review(userId, bookId, comment, rating);
 
@@ -78,7 +80,8 @@ namespace LibraryManagement.Application.Services.Implementations
         {
             var review = _reviewRepo.GetById(reviewId);
             if (review.UserId != userId)
-                throw new BusinessRuleException("it is not blong");
+                throw new BusinessRuleException(
+    "You can only delete your own reviews.");
 
             _reviewRepo.Delete(reviewId);
 
