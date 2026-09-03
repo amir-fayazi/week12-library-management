@@ -42,7 +42,7 @@ namespace LibraryManagement.Application.Services.Implementations
         {
             var review = _reviewRepo.GetById(reviewId);
             if (review.UserId != userId)
-                throw new BusinessRuleException("only owner can edit ");
+                throw new BusinessRuleException("You can only edit your own reviews. ");
             review.EditComment(comment);
             review.MarkAsPending();
             _reviewRepo.Update(review);
@@ -52,7 +52,7 @@ namespace LibraryManagement.Application.Services.Implementations
         {
             var review = _reviewRepo.GetById(reviewId);
             if (review.UserId != userId)
-                throw new BusinessRuleException("only owner can edit ");
+                throw new BusinessRuleException("You can only edit your own reviews. ");
             review.ChangeRating(rating);
             review.MarkAsPending();
             _reviewRepo.Update(review);

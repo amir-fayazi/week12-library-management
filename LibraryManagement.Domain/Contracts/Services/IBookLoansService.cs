@@ -11,7 +11,7 @@ namespace LibraryManagement.Domain.Contracts.Services
 
         void ReturnBook(int userId, int bookLoanId);
 
-        IEnumerable<BookLoanDto> GetUserLoans(int userId);
+        IEnumerable<UserLoanDto> GetUserLoans(int userId);
 
         IEnumerable<BookLoanDto> GetActiveLoans();
 

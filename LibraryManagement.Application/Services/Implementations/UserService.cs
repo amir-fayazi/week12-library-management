@@ -1,5 +1,6 @@
 ﻿using LibraryManagement.Domain.Contracts.Repositories;
 using LibraryManagement.Domain.Contracts.Services;
+using LibraryManagement.Domain.DTOs;
 using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Exceptions;
 
@@ -40,9 +41,15 @@ namespace LibraryManagement.Application.Services.Implementations
             _userRepo.Delete(id);
         }
 
-        public List<User> GetAll()
+        public IEnumerable<UserListDto> GetAll()
         {
-            return _userRepo.GetAll();
+            return _userRepo.GetAll()
+                .Select(x => new UserListDto
+                {
+                    UserId = x.Id,
+                    Username = x.Username,
+                    Role = x.Role
+                });
         }
 
         public User GetById(int userId)

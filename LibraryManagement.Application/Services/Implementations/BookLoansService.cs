@@ -2,6 +2,7 @@
 
 using LibraryManagement.Domain.Contracts.Repositories;
 using LibraryManagement.Domain.Contracts.Services;
+using LibraryManagement.Domain.DTOs;
 using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Exceptions;
 
@@ -13,17 +14,13 @@ namespace LibraryManagement.Application.Services.Implementations
         private readonly IUserRepository _userRepo;
         private readonly IBookRepository _bookRepo;
 
-        public BookLoansService(IBookLoanRepository loanRepo, IUserRepository userRepo , IBookRepository bookRepo)
+        public BookLoansService(IBookLoanRepository loanRepo, IUserRepository userRepo, IBookRepository bookRepo)
         {
             _loanRepo = loanRepo;
             _userRepo = userRepo;
             _bookRepo = bookRepo;
         }
 
-        public List<BookLoan> GetActiveLoans()
-        {
-            return _loanRepo.GetActiveLoans();
-        }
 
         public BookLoan GetLoanById(int id)
         {
@@ -31,10 +28,6 @@ namespace LibraryManagement.Application.Services.Implementations
             return loan is null ? throw new NotFoundException("Loan not found") : loan;
         }
 
-        public List<BookLoan> GetUserLoans(int userId)
-        {
-            return _loanRepo.GetUserLoans(userId);
-        }
 
         public BookLoan CreateLoanBook(int userId, int bookId)
         {
@@ -60,7 +53,7 @@ namespace LibraryManagement.Application.Services.Implementations
 
         public void ReturnBook(int userId, int bookLoanId)
         {
-            
+
             var bookLoan = _loanRepo.GetById(bookLoanId) ?? throw new NotFoundException("Book loan not found");
 
             if (bookLoan.UserId != userId)
@@ -74,6 +67,31 @@ namespace LibraryManagement.Application.Services.Implementations
             bookLoan.MarkAsReturned(returnDate);
 
             _loanRepo.Update(bookLoan);
+        }
+
+        public IEnumerable<UserLoanDto> GetUserLoans(int userId)
+        {
+            var User = _userRepo.GetById(userId);
+
+            return [.. _loanRepo.GetUserLoans(userId)
+                .Select(x => new UserLoanDto{
+                    BookLoanId = x.Id,
+                    BookTitle = x.Book.Title,
+                    BorrowDate= x.BorrowDate,
+                    ReturnDate = x.ReturnDate,
+                    IsReturned = x.IsReturned,
+                })];
+        }
+
+        public IEnumerable<BookLoanDto> GetActiveLoans()
+        {
+            return [.. _loanRepo.GetActiveLoans()
+                .Select(x => new BookLoanDto{
+            BookLoanId = x.Id,
+            Username = x.User.Username,
+            BookTitle = x.Book.Title,
+            BorrowDate = x.BorrowDate
+                })];
         }
     }
 }

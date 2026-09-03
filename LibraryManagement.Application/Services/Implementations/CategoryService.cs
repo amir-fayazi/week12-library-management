@@ -52,14 +52,19 @@ namespace LibraryManagement.Application.Contracts.Services
             _categoryRepo.Delete(categoryId);
         }
 
-        public List<Category> GetAllCategories()
+        public IEnumerable<CategoryListDto> GetAllCategories()
         {
-            return _categoryRepo.GetAll();
+            return _categoryRepo.GetAll()
+                .Select(x => new CategoryListDto
+                {
+                    CategoryId = x.Id,
+                    Name = x.Name
+                });
         }
 
-        public List<CategoryWithBookCountDto> GetCategoriesWithBookCount()
+        public IEnumerable<CategoryWithBookCountDto> GetCategoriesWithBookCount()
         {
-           return _categoryRepo.GetCategoriesWithBookCount();
+            return _categoryRepo.GetCategoriesWithBookCount();
         }
 
         public Category GetCategoryById(int id)

@@ -12,11 +12,13 @@ namespace LibraryManagement.Application.Services.Implementations
     {
         private readonly IBookRepository _bookRepo;
         private readonly ICategoryRepository _categoryRepo;
+        private readonly IReviewRepository _reviewRepo;
 
-        public BookService(IBookRepository bookRepo, ICategoryRepository categoryRepo)
+        public BookService(IBookRepository bookRepo, ICategoryRepository categoryRepo, IReviewRepository reviewRepo)
         {
             _bookRepo = bookRepo;
             _categoryRepo = categoryRepo;
+            _reviewRepo = reviewRepo;
         }
         public void ChangeCategory(int bookId, int categoryId)
         {
@@ -65,10 +67,6 @@ namespace LibraryManagement.Application.Services.Implementations
             _bookRepo.Delete(bookId);
         }
 
-        public List<Book> GetAllBooks()
-        {
-            return _bookRepo.GetAll();
-        }
         
         public Book GetBookById(int bookId)
         {
@@ -76,19 +74,53 @@ namespace LibraryManagement.Application.Services.Implementations
             return book is null ? throw new NotFoundException("Book not found") : book;
                 
         }
-        public List<Book> GetBooksByCategory(int categoryId)
-        {
-            return _bookRepo.GetByCategoryId(categoryId);
-        }
 
-        public List<Book> GetAllAvailableBooks()
-        {
-            return _bookRepo.GetAllAvailable();
-        }
 
         public BookResultDto GetBookDetails(int bookId)
         {
-            return [.._bookRepo.g]
+            var book = _bookRepo.GetById(bookId);
+            return new BookResultDto
+            {
+                BookId = book.Id,
+                CategoryName = book.Category.Name,
+                Title = book.Title,
+                AverageRating = _reviewRepo.CalculateAverageRating(bookId),
+                Reviews = _reviewRepo.GetApprovedReviewsByBookId(bookId)
+            };
+                
+        }
+
+        public IEnumerable<BookListDto> GetAllBooks()
+        {
+            return [.. _bookRepo.GetAll()
+                .Select(x=> new BookListDto
+                {
+                    BookId = x.Id,
+                    CategoryName = x.Category.Name,
+                    Title = x.Title
+                })];
+        }
+
+        public IEnumerable<BookListDto> GetAllAvailableBooks()
+        {
+            return [.. _bookRepo.GetAllAvailable()
+                .Select(x=> new BookListDto
+                {
+                    BookId = x.Id,
+                    CategoryName = x.Category.Name,
+                    Title = x.Title
+                })];
+        }
+
+        public IEnumerable<BookListDto> GetBooksByCategory(int categoryId)
+        {
+            return [.. _bookRepo.GetByCategoryId(categoryId)
+                .Select(x=> new BookListDto
+                {
+                    BookId = x.Id,
+                    CategoryName = x.Category.Name,
+                    Title = x.Title
+                })];
         }
     }
 }
