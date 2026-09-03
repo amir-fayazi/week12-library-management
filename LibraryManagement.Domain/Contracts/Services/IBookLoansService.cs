@@ -1,5 +1,6 @@
 ﻿
 
+using LibraryManagement.Domain.DTOs;
 using LibraryManagement.Domain.Entities;
 
 namespace LibraryManagement.Domain.Contracts.Services
@@ -10,9 +11,9 @@ namespace LibraryManagement.Domain.Contracts.Services
 
         void ReturnBook(int userId, int bookLoanId);
 
-        List<BookLoan> GetUserLoans(int userId);
+        IEnumerable<BookLoanDto> GetUserLoans(int userId);
 
-        List<BookLoan> GetActiveLoans();
+        IEnumerable<BookLoanDto> GetActiveLoans();
 
         BookLoan GetLoanById(int id);
     }

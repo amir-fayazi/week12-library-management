@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Domain.Entities;
+﻿using LibraryManagement.Domain.DTOs;
+using LibraryManagement.Domain.Entities;
 
 namespace LibraryManagement.Domain.Contracts.Services
 {
@@ -6,7 +7,7 @@ namespace LibraryManagement.Domain.Contracts.Services
     {
         User GetById(int userId);
         User? GetByUsername(string username);
-        List<User> GetAll();
+        IEnumerable<UserListDto> GetAll();
 
         void ChangeUsername(int userId, string username);
         void ChangePassword(int userId, string currentPassword, string newPassword);

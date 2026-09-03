@@ -9,8 +9,8 @@ namespace LibraryManagement.Domain.Contracts.Services
     {
         Category CreateCategory(string name);
         void ChangeName(int categoryId, string name);
-        List<Category> GetAllCategories();
-        List<CategoryWithBookCountDto> GetCategoriesWithBookCount();
+        IEnumerable<CategoryListDto> GetAllCategories();
+        IEnumerable<CategoryWithBookCountDto> GetCategoriesWithBookCount();
         Category GetCategoryById(int id);
        
         void DeleteCategory(int categoryId);

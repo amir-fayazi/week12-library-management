@@ -9,9 +9,11 @@ namespace LibraryManagement.Domain.Contracts.Services
         Book CreateBook(string title, int categoryId);
 
         Book GetBookById(int bookId);
-        List<Book> GetAllBooks();
-        List<Book> GetAllAvailableBooks();
-        List<Book> GetBooksByCategory(int categoryId);
+        IEnumerable<BookListDto> GetAllBooks();
+
+        IEnumerable<BookListDto> GetAllAvailableBooks();
+
+        IEnumerable<BookListDto> GetBooksByCategory(int categoryId);
         void ChangeTitle(int bookId, string title);
         void ChangeCategory(int bookId, int categoryId);
         void DeleteBook(int bookId);
