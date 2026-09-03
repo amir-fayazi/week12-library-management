@@ -3,6 +3,7 @@ using LibraryManagement.Domain.Contracts.Repositories;
 using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Exceptions;
 using LibraryManagement.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Infrastructure.Repositories.EfCore
 {
@@ -72,13 +73,16 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
 
         public List<BookLoan> GetActiveLoans()
         {
-            return _context.BookLoans.Where(x => !x.IsReturned).ToList();
+            return [.. _context.BookLoans
+                .Include(x=>x.Book)
+                .Include(x=>x.User)
+                .Where(x => !x.IsReturned)];
         }
         public List<BookLoan> GetUserLoans(int userId)
         {
-            return _context.BookLoans
-                .Where(x => x.User.Id == userId)
-                .ToList();
+            return [.. _context.BookLoans
+                .Include(x=>x.Book)
+                .Where(x => x.User.Id == userId)];
         }
 
         public bool HasUserBorrowedBook(int userId, int bookId)

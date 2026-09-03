@@ -2,6 +2,7 @@
 using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Exceptions;
 using LibraryManagement.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace LibraryManagement.Infrastructure.Repositories.EfCore
@@ -37,12 +38,16 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
 
         public List<Book> GetAll()
         {
-            return _context.Books.ToList();
+            return [.._context.Books.Include(x => x.Category)];
         }
 
         public List<Book> GetAllAvailable()
         {
-            return _context.Books.Where(book => book.BookLoans.All(loan => loan.IsReturned)).ToList();
+            return [.._context.Books
+                .Include(x=> x.Category)
+                .Where(book => book.BookLoans
+                .All(loan => loan.IsReturned)
+                )];
         }
 
         public List<Book> GetAllBorrowed()
@@ -52,7 +57,10 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
 
         public Book GetById(int id)
         {
-            var book = _context.Books.Find(id);
+            var book = _context.Books
+                .Include(x => x.Category)
+                .Include(x => x.BookLoans)
+                .FirstOrDefault(x => x.Id == id);
 
             if (book is null)
                 throw new NotFoundException($"Book with Id: {id} not found.");
@@ -61,7 +69,10 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
         }
         public List<Book> GetByCategoryId(int categoryId)
         {
-            return _context.Books.Where(p => p.CategoryId == categoryId).ToList();
+            return [.._context.Books
+             .Include(x => x.Category)
+             .Where(x => x.CategoryId == categoryId)
+             ];
         }
 
         public void Update(Book updatedBook)

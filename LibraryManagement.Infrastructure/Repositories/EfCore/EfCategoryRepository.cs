@@ -3,6 +3,7 @@ using LibraryManagement.Domain.DTOs;
 using LibraryManagement.Domain.Entities;
 using LibraryManagement.Domain.Exceptions;
 using LibraryManagement.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -52,7 +53,9 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
 
         public Category? GetById(int id)
         {
-            return _context.Categories.Find(id);
+            return _context.Categories
+              .Include(x => x.Books)
+              .FirstOrDefault(x => x.Id == id);
         }
 
         public void Update(Category updatedCategory)
