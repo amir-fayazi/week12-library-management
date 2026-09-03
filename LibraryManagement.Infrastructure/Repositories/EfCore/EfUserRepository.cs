@@ -46,7 +46,7 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
         {
             var user = _context.Users.Find(id);
 
-            if (review is null)
+            if (user is null)
                 throw new NotFoundException($"User with Id: {id} not found.");
 
             return user;

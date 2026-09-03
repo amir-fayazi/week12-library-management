@@ -15,8 +15,11 @@ namespace LibraryManagement.Domain.Contracts.Repositories
 
         //--------------------
         
-        IEnumerable<Review> GetApprovedReviewsByBookId(int bookId); 
-        IEnumerable<Review> GetPendingReviews(); 
+        IEnumerable<ApprovedReviewDto> GetApprovedReviewsByBookId(int bookId); 
+        IEnumerable<PendingReviewDto> GetPendingReviews(); 
         IEnumerable<UserReviewDto> GetByUserId(int userId);
+
+        //===================================
+        double? CalculateAverageRating(int bookId);
     }
 }

@@ -12,9 +12,16 @@ namespace LibraryManagement.Domain.Contracts.Services
         void ChangeRating(int userId, int reviewId, int rating);
         void ChangeComment(int userId, int reviewId, string comment);
 
-        //=========================================
+        
         IEnumerable<UserReviewDto> GetAllUserReviews(int userId);
         void ApproveReview(int reviewId);
         void RejectReview(int reviewId);
+
+        //===================
+        IEnumerable<ApprovedReviewDto> GetApprovedReviewsByBookId(int bookId);
+
+        IEnumerable<PendingReviewDto> GetPendingReviews();
+
+        double? GetAverageRatingByBookId(int bookId);
     }
 }

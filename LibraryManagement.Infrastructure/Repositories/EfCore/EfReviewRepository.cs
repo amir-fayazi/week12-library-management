@@ -37,16 +37,21 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
             return _context.Reviews.Any(r => r.UserId == userId && r.BookId == bookId);
         }
 
-        public IEnumerable<Review> GetApprovedReviewsByBookId(int bookId)
+        public IEnumerable<ApprovedReviewDto> GetApprovedReviewsByBookId(int bookId)
         {
-            return [.._context.Reviews
-                .Where(x=>x.BookId == bookId && x.Status == ReviewStatusEnum.Approved)];
+            return [.. _context.Reviews
+    .Where(x => x.BookId == bookId &&
+                x.Status == ReviewStatusEnum.Approved)
+    .Select(x => new ApprovedReviewDto
+    {
+        ReviewId = x.Id,
+        Username = x.User.Username,
+        Comment = x.Comment,
+        Rating = x.Rating,
+        CreatedAt = x.CreatedAt
+    })];
         }
 
-        public IEnumerable<Review> GetByBookId(int bookId)
-        {
-            return [.. _context.Reviews.Where(r => r.BookId == bookId)];
-        }
 
         public Review GetById(int id)
         {
@@ -74,10 +79,20 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
                })];
         }
 
-        public IEnumerable<Review> GetPendingReviews()
+        public IEnumerable<PendingReviewDto> GetPendingReviews()
         {
             return [.._context.Reviews
-               .Where(x=>x.Status == ReviewStatusEnum.Pending)];
+               .Where(x=>x.Status == ReviewStatusEnum.Pending)
+               .Select(x=> new PendingReviewDto
+               {
+               ReviewId = x.Id,
+               Username = x.User.Username,
+               BookTitle = x.Book.Title,
+               Comment = x.Comment,
+               Rating = x.Rating,
+               CreatedAt = x.CreatedAt,
+               UpdatedAt = x.UpdatedAt
+               })];
         }
 
         public void Update(Review review)
@@ -86,6 +101,13 @@ namespace LibraryManagement.Infrastructure.Repositories.EfCore
             _context.SaveChanges();
         }
 
-        
+        //================================
+        public double? CalculateAverageRating(int bookId)
+        {
+            return _context.Reviews.
+                 Where(x => x.BookId == bookId && x.Status == ReviewStatusEnum.Approved)
+                 .Select(x => (double?)x.Rating)
+                 .Average();
+        }
     }
 }

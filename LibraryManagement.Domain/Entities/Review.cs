@@ -66,6 +66,7 @@ namespace LibraryManagement.Domain.Entities
                     "New rating cannot be equal to current rating.");
 
             Rating = newRating;
+            UpdatedAt = DateTime.UtcNow;
         }
         public void Approve()
         {
@@ -79,11 +80,10 @@ namespace LibraryManagement.Domain.Entities
                 throw new BusinessRuleException("Only pending reviews can be rejected.");
             Status = ReviewStatusEnum.Rejected;
         }
-        public void Pending()
+        public void MarkAsPending()
         {
-            if (Status == ReviewStatusEnum.Pending)
-                throw new BusinessRuleException("Only rejected and approved reviews can be pending.");
-            Status = ReviewStatusEnum.Pending;
+            if (Status != ReviewStatusEnum.Pending)
+                Status = ReviewStatusEnum.Pending;
         }
 
 

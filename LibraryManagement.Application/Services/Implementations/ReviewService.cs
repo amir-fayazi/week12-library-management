@@ -43,7 +43,8 @@ namespace LibraryManagement.Application.Services.Implementations
             var review = _reviewRepo.GetById(reviewId);
             if (review.UserId != userId)
                 throw new BusinessRuleException("only owner can edit ");
-            review.Pending();
+            review.EditComment(comment);
+            review.MarkAsPending();
             _reviewRepo.Update(review);
         }
 
@@ -53,7 +54,7 @@ namespace LibraryManagement.Application.Services.Implementations
             if (review.UserId != userId)
                 throw new BusinessRuleException("only owner can edit ");
             review.ChangeRating(rating);
-            review.Pending();
+            review.MarkAsPending();
             _reviewRepo.Update(review);
 
         }
@@ -88,5 +89,21 @@ namespace LibraryManagement.Application.Services.Implementations
             return [.. _reviewRepo.GetByUserId(userId)];
         }
 
+        public IEnumerable<ApprovedReviewDto> GetApprovedReviewsByBookId(int bookId)
+        {
+            var book = _bookRepo.GetById(bookId);
+            return _reviewRepo.GetApprovedReviewsByBookId(bookId);
+        }
+
+        public IEnumerable<PendingReviewDto> GetPendingReviews()
+        {
+            return _reviewRepo.GetPendingReviews();
+        }
+
+        public double? GetAverageRatingByBookId(int bookId)
+        {
+            var book = _bookRepo.GetById(bookId);
+            return _reviewRepo.CalculateAverageRating(bookId);
+        }
     }
 }
