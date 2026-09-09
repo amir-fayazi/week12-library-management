@@ -97,7 +97,8 @@ namespace LibraryManagement.Application.Services.Implementations
                 {
                     BookId = x.Id,
                     CategoryName = x.Category.Name,
-                    Title = x.Title
+                    Title = x.Title,
+                    AverageRating = _reviewRepo.CalculateAverageRating(x.Id)
                 })];
         }
 
