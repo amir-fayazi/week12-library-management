@@ -14,6 +14,7 @@ namespace LibraryManagement.Domain.Entities
         public List<BookLoan> BookLoans { get; private set; } = [];
         public List<Review> Reviews { get; set; } = [];
 
+        public List<Wishlist> Wishlists { get; private set; } = [];
         public User(string username, string password, RoleEnum role)
         {
             ValidateUsername(username);

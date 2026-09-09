@@ -27,6 +27,8 @@ namespace LibraryManagement.Domain.Entities
             Title = title;
         }
 
+        
+        public List<Wishlist> Wishlists { get; private set; } = [];
 
         public void ChangeTitle(string title)
         {
