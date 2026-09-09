@@ -10,5 +10,6 @@ namespace LibraryManagement.Domain.DTOs
         public double? AverageRating { get; set; }
 
         public string CategoryName { get; set; } = string.Empty;
+        public int UsersWishlistCount { get; set; }
     }
 }

@@ -13,12 +13,14 @@ namespace LibraryManagement.Application.Services.Implementations
         private readonly IBookRepository _bookRepo;
         private readonly ICategoryRepository _categoryRepo;
         private readonly IReviewRepository _reviewRepo;
+        private readonly IWishlistRepository _wishListRepo;
 
-        public BookService(IBookRepository bookRepo, ICategoryRepository categoryRepo, IReviewRepository reviewRepo)
+        public BookService(IBookRepository bookRepo, ICategoryRepository categoryRepo, IReviewRepository reviewRepo, IWishlistRepository wishListRepo)
         {
             _bookRepo = bookRepo;
             _categoryRepo = categoryRepo;
             _reviewRepo = reviewRepo;
+            _wishListRepo = wishListRepo;
         }
         public void ChangeCategory(int bookId, int categoryId)
         {
@@ -98,7 +100,8 @@ namespace LibraryManagement.Application.Services.Implementations
                     BookId = x.Id,
                     CategoryName = x.Category.Name,
                     Title = x.Title,
-                    AverageRating = _reviewRepo.CalculateAverageRating(x.Id)
+                    AverageRating = _reviewRepo.CalculateAverageRating(x.Id),
+                    UsersWishlistCount = _wishListRepo.CountByBookId(x.Id)
                 })];
         }
 
@@ -109,7 +112,9 @@ namespace LibraryManagement.Application.Services.Implementations
                 {
                     BookId = x.Id,
                     CategoryName = x.Category.Name,
-                    Title = x.Title
+                    Title = x.Title,
+                    AverageRating = _reviewRepo.CalculateAverageRating(x.Id),
+                    UsersWishlistCount = _wishListRepo.CountByBookId(x.Id)
                 })];
         }
 
@@ -120,7 +125,9 @@ namespace LibraryManagement.Application.Services.Implementations
                 {
                     BookId = x.Id,
                     CategoryName = x.Category.Name,
-                    Title = x.Title
+                    Title = x.Title,
+                     AverageRating = _reviewRepo.CalculateAverageRating(x.Id),
+                    UsersWishlistCount = _wishListRepo.CountByBookId(x.Id)
                 })];
         }
     }

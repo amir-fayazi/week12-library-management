@@ -10,6 +10,7 @@ namespace LibraryManagement.Infrastructure.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<BookLoan> BookLoans { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Wishlist> Wishlists { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
