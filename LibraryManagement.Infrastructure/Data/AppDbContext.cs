@@ -19,76 +19,7 @@ namespace LibraryManagement.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //-------------------------Configure column names
-
-            modelBuilder.Entity<User>()
-                .Property(x => x.Id)
-                .HasColumnName("UserId");
-
-            modelBuilder.Entity<Book>()
-                .Property(x => x.Id)
-                .HasColumnName("BookId");
-
-            modelBuilder.Entity<Category>()
-                .Property(x => x.Id)
-                .HasColumnName("CategoryId");
-
-            modelBuilder.Entity<BookLoan>()
-                .Property(x => x.Id)
-                .HasColumnName("BookLoanId");
-
-
-            //-------------------------Configure unique constraints
-
-            modelBuilder.Entity<User>()
-                .HasIndex(x => x.Username)
-                .IsUnique();
-
-            modelBuilder.Entity<Category>()
-                .HasIndex(x => x.Name)
-                .IsUnique();
-
-            modelBuilder.Entity<Book>()
-                .HasIndex(x => x.Title)
-                .IsUnique();
-
-
-            //-------------------------Configure relationships
-
-            modelBuilder.Entity<Book>()
-                .HasOne(book => book.Category)
-                .WithMany(category => category.Books)
-                .HasForeignKey(book => book.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<BookLoan>()
-                .HasOne(loan => loan.Book)
-                .WithMany(book => book.BookLoans)
-                .HasForeignKey(loan => loan.BookId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<BookLoan>()
-                .HasOne(loan => loan.User)
-                .WithMany(user => user.BookLoans)
-                .HasForeignKey(loan => loan.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            //-------------------------------length
-            modelBuilder.Entity<User>()
-            .Property(x => x.Username)
-             .HasMaxLength(30);
-
-            modelBuilder.Entity<User>()
-                .Property(x => x.Password)
-                .HasMaxLength(50);
-
-            modelBuilder.Entity<Category>()
-                .Property(x => x.Name)
-                .HasMaxLength(50);
-
-            modelBuilder.Entity<Book>()
-                .Property(x => x.Title)
-                .HasMaxLength(150);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         }
     }
 }
