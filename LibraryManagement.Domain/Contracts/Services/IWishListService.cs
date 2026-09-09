@@ -7,9 +7,9 @@ namespace LibraryManagement.Domain.Contracts.Services
 {
     public interface IWishListService
     {
-        Wishlist CreateWishList(int userId, int BookId);
-        void DeleteWishList(int userId, int wishlistId);
-        IEnumerable<WishlistDto> GetUserWishList(int userId);
+        Wishlist CreateWishlist(int userId, int bookId);
+        void DeleteWishlist(int userId, int wishlistId);
+        IEnumerable<WishlistDto> GetUserWishlist(int userId);
 
     }
 }

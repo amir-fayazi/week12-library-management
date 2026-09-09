@@ -6,7 +6,7 @@ using LibraryManagement.Domain.Exceptions;
 
 namespace LibraryManagement.Application.Services.Implementations
 {
-    public class WishlistService : IWishlistService
+    public class WishlistService : IWishListService
     {
         private readonly IWishlistRepository _wishlistRepo;
         private readonly IUserRepository _userRepo;

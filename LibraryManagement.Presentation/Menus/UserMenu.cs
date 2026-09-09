@@ -10,6 +10,7 @@ namespace LibraryManagement.Presentation.Menus
         private readonly IBookService _bookService;
         private readonly IBookLoansService _bookLoansService;
         private readonly UserReviewMenu _userReviewMenu;
+        private readonly WishlistMenu _wishlistMenu;
 
         private readonly int _userId;
 
@@ -18,13 +19,15 @@ namespace LibraryManagement.Presentation.Menus
             ICategoryService categoryService,
             IBookService bookService,
             IBookLoansService bookLoansService,
-            UserReviewMenu userReviewMenu)
+            UserReviewMenu userReviewMenu,
+            WishlistMenu wishlistMenu)
         {
             _userId = userId;
             _categoryService = categoryService;
             _bookService = bookService;
             _bookLoansService = bookLoansService;
             _userReviewMenu = userReviewMenu;
+            _wishlistMenu = wishlistMenu;
         }
 
         public void Show()
@@ -40,6 +43,7 @@ namespace LibraryManagement.Presentation.Menus
                 Console.WriteLine("4. Borrow Book");
                 Console.WriteLine("5. Return Book");
                 Console.WriteLine("6. Manage Reviews");
+                Console.WriteLine("7. Manage Wishlist");
                 Console.WriteLine("0. Logout");
 
                 Console.Write("Select: ");
@@ -71,6 +75,10 @@ namespace LibraryManagement.Presentation.Menus
                         _userReviewMenu.Show();
                         break;
 
+                    case "7":
+                        _wishlistMenu.Show();
+                        break;
+
                     case "0":
                         return;
 
@@ -86,7 +94,8 @@ namespace LibraryManagement.Presentation.Menus
         {
             Console.Clear();
 
-            var categories = _categoryService.GetAllCategories();
+            var categories =
+                _categoryService.GetAllCategories();
 
             ConsolePainter.WriteTable(
                 categories,
@@ -124,7 +133,9 @@ namespace LibraryManagement.Presentation.Menus
 
                 var bookIdInput = Console.ReadLine();
 
-                if (!int.TryParse(bookIdInput, out int bookId))
+                if (!int.TryParse(
+                    bookIdInput,
+                    out int bookId))
                 {
                     Console.WriteLine("Invalid book id.");
 
@@ -136,11 +147,14 @@ namespace LibraryManagement.Presentation.Menus
 
                 try
                 {
-                    _bookLoansService.CreateLoanBook(_userId, bookId);
+                    _bookLoansService.CreateLoanBook(
+                        _userId,
+                        bookId);
 
-                    Console.WriteLine("Book borrowed successfully.");
+                    Console.WriteLine(
+                        "Book borrowed successfully.");
+
                     Console.ReadKey();
-
                     return;
                 }
                 catch (NotFoundException ex)
@@ -208,9 +222,12 @@ namespace LibraryManagement.Presentation.Menus
 
                 var loanIdInput = Console.ReadLine();
 
-                if (!int.TryParse(loanIdInput, out int bookLoanId))
+                if (!int.TryParse(
+                    loanIdInput,
+                    out int bookLoanId))
                 {
-                    Console.WriteLine("Invalid book loan id.");
+                    Console.WriteLine(
+                        "Invalid book loan id.");
 
                     if (AskTryAgain())
                         continue;
@@ -220,11 +237,14 @@ namespace LibraryManagement.Presentation.Menus
 
                 try
                 {
-                    _bookLoansService.ReturnBook(_userId, bookLoanId);
+                    _bookLoansService.ReturnBook(
+                        _userId,
+                        bookLoanId);
 
-                    Console.WriteLine("Book returned successfully.");
+                    Console.WriteLine(
+                        "Book returned successfully.");
+
                     Console.ReadKey();
-
                     return;
                 }
                 catch (NotFoundException ex)
@@ -269,7 +289,8 @@ namespace LibraryManagement.Presentation.Menus
 
         private void ShowAvailableBooksTable()
         {
-            var availableBooks = _bookService.GetAllAvailableBooks();
+            var availableBooks =
+                _bookService.GetAllAvailableBooks();
 
             ConsolePainter.WriteTable(
                 availableBooks,
@@ -279,7 +300,8 @@ namespace LibraryManagement.Presentation.Menus
 
         private void ShowUserLoansTable()
         {
-            var loans = _bookLoansService.GetUserLoans(_userId);
+            var loans =
+                _bookLoansService.GetUserLoans(_userId);
 
             ConsolePainter.WriteTable(
                 loans,
@@ -294,9 +316,7 @@ namespace LibraryManagement.Presentation.Menus
             Console.WriteLine("0. Back");
             Console.Write("Select: ");
 
-            var option = Console.ReadLine();
-
-            return option == "1";
+            return Console.ReadLine() == "1";
         }
     }
 }

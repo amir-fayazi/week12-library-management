@@ -27,13 +27,17 @@ IBookLoanRepository bookLoanRepository =
 IReviewRepository reviewRepository =
     new EfReviewRepository(context);
 
+IWishlistRepository wishListRepository =
+    new EfWishListRepository(context);
+
 
 // Services
 IBookService bookService =
     new BookService(
         bookRepository,
         categoryRepository,
-        reviewRepository);
+        reviewRepository,
+        wishListRepository);
 
 ICategoryService categoryService =
     new CategoryService(
@@ -55,6 +59,13 @@ IReviewService reviewService =
         bookRepository,
         reviewRepository,
         bookLoanRepository);
+
+IWishListService wishListService =
+    new WishlistService(
+       wishListRepository,
+       userRepository,
+       bookRepository
+       );
 
 
 // Admin Sub Menus
@@ -88,12 +99,20 @@ Func<int, UserMenu> userMenuFactory = userId =>
             reviewService,
             bookService);
 
+    var wishListMenu =
+    new WishlistMenu(
+        userId,
+        wishListService,
+        bookService
+        );
+
     return new UserMenu(
         userId,
         categoryService,
         bookService,
         bookLoansService,
-        userReviewMenu);
+        userReviewMenu,
+        wishListMenu);
 };
 
 
