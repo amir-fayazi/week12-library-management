@@ -13,6 +13,7 @@ namespace LibraryManagement.Domain.Contracts.Services
         void ChangePassword(int userId, string currentPassword, string newPassword);
 
         void Delete(int id);
+        UserProfileDto GetProfile(int userId);
     }
 }
 

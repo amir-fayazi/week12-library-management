@@ -62,11 +62,39 @@ namespace LibraryManagement.Application.Services.Implementations
             if (bookLoan.IsReturned)
                 throw new BusinessRuleException("Book has already been returned.");
 
+
             var returnDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
+            var penaltyAmount = CalculatePenalty(bookLoan.BorrowDate, returnDate);
+
+            if(penaltyAmount > 0)
+            {
+                ApplyPenalty(userId, penaltyAmount);
+            }
+        
             bookLoan.MarkAsReturned(returnDate);
 
             _loanRepo.Update(bookLoan);
+        }
+
+        private decimal CalculatePenalty(DateOnly borrowDate, DateOnly returnDate)
+        {
+            var loanDays = returnDate.DayNumber - borrowDate.DayNumber;
+
+            if(loanDays > 7)
+            {
+                return (loanDays - 7) * 10000;
+            }
+            return 0;
+        }
+
+        private void ApplyPenalty(int userId, decimal penaltyAmount)
+        {
+            var user = _userRepo.GetById(userId);
+
+            user.AddPenalty(penaltyAmount);
+
+            _userRepo.Update(user);
         }
 
         public IEnumerable<UserLoanDto> GetUserLoans(int userId)

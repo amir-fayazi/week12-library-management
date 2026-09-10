@@ -9,17 +9,20 @@ namespace LibraryManagement.Presentation.Menus
         private readonly BookMenu _bookMenu;
         private readonly AdminReviewMenu _adminReviewMenu;
         private readonly IBookLoansService _bookLoansService;
+        private readonly IUserService _userService;
 
         public AdminMenu(
             CategoryMenu categoryMenu,
             BookMenu bookMenu,
             AdminReviewMenu adminReviewMenu,
-            IBookLoansService bookLoansService)
+            IBookLoansService bookLoansService,
+            IUserService userService)
         {
             _categoryMenu = categoryMenu;
             _bookMenu = bookMenu;
             _adminReviewMenu = adminReviewMenu;
             _bookLoansService = bookLoansService;
+            _userService = userService;
         }
 
         public void Show()
@@ -33,6 +36,7 @@ namespace LibraryManagement.Presentation.Menus
                 Console.WriteLine("2. Manage Books");
                 Console.WriteLine("3. Manage Reviews");
                 Console.WriteLine("4. View Active Loans");
+                Console.WriteLine("5. View User Penalties");
                 Console.WriteLine("0. Logout");
 
                 Console.Write("Select: ");
@@ -56,6 +60,10 @@ namespace LibraryManagement.Presentation.Menus
                         ShowActiveLoans();
                         break;
 
+                    case "5":
+                        ShowUserPenalties();
+                        break;
+
                     case "0":
                         return;
 
@@ -77,6 +85,24 @@ namespace LibraryManagement.Presentation.Menus
 
             ConsolePainter.WriteTable(
                 activeLoans,
+                ConsoleColor.Blue,
+                ConsoleColor.White);
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to back...");
+            Console.ReadKey();
+        }
+
+        private void ShowUserPenalties()
+        {
+            Console.Clear();
+
+            Console.WriteLine("===== User Penalties =====");
+
+            var users = _userService.GetAll();
+
+            ConsolePainter.WriteTable(
+                users,
                 ConsoleColor.Blue,
                 ConsoleColor.White);
 

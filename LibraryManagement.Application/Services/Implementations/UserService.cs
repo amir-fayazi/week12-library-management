@@ -48,7 +48,8 @@ namespace LibraryManagement.Application.Services.Implementations
                 {
                     UserId = x.Id,
                     Username = x.Username,
-                    Role = x.Role
+                    Role = x.Role,
+                    PenaltyAmount = x.PenaltyAmount
                 });
         }
 
@@ -64,6 +65,19 @@ namespace LibraryManagement.Application.Services.Implementations
             
            return  user is null ? throw new NotFoundException("User not found") : user;
             
+        }
+
+        public UserProfileDto GetProfile(int userId)
+        {
+            var user = GetById(userId);
+
+            return new UserProfileDto
+            {
+                UserId = user.Id,
+                Username = user.Username,
+                Role = user.Role,
+                PenaltyAmount = user.PenaltyAmount
+            };
         }
     }
 }

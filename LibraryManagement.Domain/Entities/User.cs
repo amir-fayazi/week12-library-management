@@ -15,6 +15,9 @@ namespace LibraryManagement.Domain.Entities
         public List<Review> Reviews { get; set; } = [];
 
         public List<Wishlist> Wishlists { get; private set; } = [];
+
+        public decimal PenaltyAmount { get; private set; }
+
         public User(string username, string password, RoleEnum role)
         {
             ValidateUsername(username);
@@ -52,7 +55,13 @@ namespace LibraryManagement.Domain.Entities
             Password = newPassword;
 
         }
+        //---------------------------penalty
+        public void AddPenalty(decimal amount)
+        {
+            ValidatePenalty(amount);
 
+            PenaltyAmount += amount;
+        }
 
         //---------------------------Validate
         private void ValidateUsername(string username)
@@ -79,6 +88,14 @@ namespace LibraryManagement.Domain.Entities
             if (!Enum.IsDefined(typeof(RoleEnum), role))
                 throw new ValidationException("Invalid user role.");
         }
+        private void ValidatePenalty(decimal amount)
+        {
+            if (amount <= 0)
+                throw new ValidationException(
+                    "Penalty amount must be greater than zero.");
+        }
+
+
     }
 
 }

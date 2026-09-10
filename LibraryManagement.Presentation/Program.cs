@@ -32,6 +32,10 @@ IWishlistRepository wishListRepository =
 
 
 // Services
+IUserService userService =
+    new UserService(
+        userRepository);
+
 IBookService bookService =
     new BookService(
         bookRepository,
@@ -87,7 +91,8 @@ var adminMenu =
         categoryMenu,
         bookMenu,
         adminReviewMenu,
-        bookLoansService);
+        bookLoansService,
+        userService);
 
 
 // User Menu Factory
@@ -112,7 +117,8 @@ Func<int, UserMenu> userMenuFactory = userId =>
         bookService,
         bookLoansService,
         userReviewMenu,
-        wishListMenu);
+        wishListMenu,
+        userService);
 };
 
 

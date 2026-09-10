@@ -11,6 +11,7 @@ namespace LibraryManagement.Presentation.Menus
         private readonly IBookLoansService _bookLoansService;
         private readonly UserReviewMenu _userReviewMenu;
         private readonly WishlistMenu _wishlistMenu;
+        private readonly IUserService _userService;
 
         private readonly int _userId;
 
@@ -20,7 +21,8 @@ namespace LibraryManagement.Presentation.Menus
             IBookService bookService,
             IBookLoansService bookLoansService,
             UserReviewMenu userReviewMenu,
-            WishlistMenu wishlistMenu)
+            WishlistMenu wishlistMenu,
+            IUserService userService)
         {
             _userId = userId;
             _categoryService = categoryService;
@@ -28,6 +30,7 @@ namespace LibraryManagement.Presentation.Menus
             _bookLoansService = bookLoansService;
             _userReviewMenu = userReviewMenu;
             _wishlistMenu = wishlistMenu;
+            _userService = userService;
         }
 
         public void Show()
@@ -44,6 +47,7 @@ namespace LibraryManagement.Presentation.Menus
                 Console.WriteLine("5. Return Book");
                 Console.WriteLine("6. Manage Reviews");
                 Console.WriteLine("7. Manage Wishlist");
+                Console.WriteLine("8. View Profile");
                 Console.WriteLine("0. Logout");
 
                 Console.Write("Select: ");
@@ -78,7 +82,9 @@ namespace LibraryManagement.Presentation.Menus
                     case "7":
                         _wishlistMenu.Show();
                         break;
-
+                    case "8":
+                        ShowProfile();
+                        break;
                     case "0":
                         return;
 
@@ -307,6 +313,24 @@ namespace LibraryManagement.Presentation.Menus
                 loans,
                 ConsoleColor.Blue,
                 ConsoleColor.White);
+        }
+
+        private void ShowProfile()
+        {
+            Console.Clear();
+
+            Console.WriteLine("===== My Profile =====");
+
+            var profile = _userService.GetProfile(_userId);
+
+            Console.WriteLine($"User Id: {profile.UserId}");
+            Console.WriteLine($"Username: {profile.Username}");
+            Console.WriteLine($"Role: {profile.Role}");
+            Console.WriteLine($"Unpaid Penalty: {profile.PenaltyAmount:N0} Toman");
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to back...");
+            Console.ReadKey();
         }
 
         private bool AskTryAgain()
