@@ -63,10 +63,6 @@ namespace LibraryManagement.Application.Services.Implementations
         {
             var user = _userRepo.GetById(userId);
             var book = _bookRepo.GetById(bookId);
-            if (!_loanRepo.HasUserBorrowedBook(userId, bookId))
-                throw new BusinessRuleException(
-    "You can only review books that you have borrowed.");
-
             if (_reviewRepo.ExistsByUserAndBook(userId, bookId))
                 throw new DuplicateException(
     "You have already reviewed this book.");
