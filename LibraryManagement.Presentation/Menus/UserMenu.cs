@@ -1,5 +1,6 @@
 ﻿using ADO.NetDemoConsoleApp;
 using LibraryManagement.Domain.Contracts.Services;
+using LibraryManagement.Domain.DTOs;
 using LibraryManagement.Domain.Exceptions;
 
 namespace LibraryManagement.Presentation.Menus
@@ -323,10 +324,10 @@ namespace LibraryManagement.Presentation.Menus
 
             var profile = _userService.GetProfile(_userId);
 
-            Console.WriteLine($"User Id: {profile.UserId}");
-            Console.WriteLine($"Username: {profile.Username}");
-            Console.WriteLine($"Role: {profile.Role}");
-            Console.WriteLine($"Unpaid Penalty: {profile.PenaltyAmount:N0} Toman");
+            ConsolePainter.WriteTable(new List<UserProfileDto> { profile},
+                ConsoleColor.Blue,
+                ConsoleColor.White);
+
 
             Console.WriteLine();
             Console.WriteLine("Press any key to back...");

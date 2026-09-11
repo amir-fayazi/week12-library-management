@@ -8,8 +8,8 @@ namespace LibraryManagement.Domain.Entities
 {
     public class User : BaseEntity
     {
-        public string Username { get; private set; }
-        public string Password { get; private set; }
+        public string Username { get; private set; } = null!;
+        public string Password { get; private set; } = null!;
         public RoleEnum Role { get; private set; }
         public List<BookLoan> BookLoans { get; private set; } = [];
         public List<Review> Reviews { get; set; } = [];
@@ -17,6 +17,11 @@ namespace LibraryManagement.Domain.Entities
         public List<Wishlist> Wishlists { get; private set; } = [];
 
         public decimal PenaltyAmount { get; private set; }
+
+        private User()
+        {
+            
+        }
 
         public User(string username, string password, RoleEnum role)
         {
